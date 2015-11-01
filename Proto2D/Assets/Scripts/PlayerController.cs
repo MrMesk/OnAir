@@ -17,6 +17,8 @@ public class PlayerController : MonoBehaviour
 	public GameObject trailMid;
 	public float fxTime;
 
+	public float swordRadius;
+
 	float fxTimer;
 	Ray ray;
 	float dodgeTimer;
@@ -26,7 +28,11 @@ public class PlayerController : MonoBehaviour
 	bool canDodge;
 	bool isDodging;
 	Vector3 dir;
-	string weapon;
+	public string weapon;
+	public float swordForce;
+
+	public float swordCD;
+	public float gunCD;
 	
 
 
@@ -35,7 +41,6 @@ public class PlayerController : MonoBehaviour
 	{
 		canDodge = true;
 		dir = transform.position;
-		weapon = "Gun";
 		dodgeTimer = 0f;
 		dodgeCDTimer = 0f;
 	}
@@ -125,27 +130,54 @@ public class PlayerController : MonoBehaviour
 
 
 		// Système de tir
-
 		RaycastHit hit;
 		
 		if (Input.GetMouseButton(0) && canShoot && !isDodging)
 		{
 			ray = Camera.main.ScreenPointToRay(Input.mousePosition);
-			
 			if (Physics.Raycast(ray, out hit))
 			{
+				Debug.Log ("Click !!");
+
+
 				Vector3 shotLocation = hit.point;
 				Vector3 shotDir = shotLocation - transform.position;
-				shotDir.z = 0f;
+				shotDir.z = 0.9f;
 				shotDir = shotDir.normalized;
 
-				GameObject clone = Instantiate (shot, transform.position, transform.rotation) as GameObject;
-				//Debug.Log (shotDir);
-				clone.GetComponent<Rigidbody>().AddForce(shotDir * shotSpeed);
-				canShoot = false;
-			}
-			
-		}
+				switch(weapon)
+				{
+				case "Gun":
+					shotCD = 0.15f;
+					GameObject clone = Instantiate (shot, transform.position, transform.rotation) as GameObject;
+					clone.GetComponent<Rigidbody>().AddForce(shotDir * shotSpeed);
+					canShoot = false;
+				
+				break;
 
+				case "Sword":
+					shotCD = swordCD;
+
+					Debug.Log ("Attempt to attack");
+					Collider[] potentialTargets = Physics.OverlapSphere(transform.position,swordRadius);
+					for (int i =0; i< potentialTargets.Length; i++) 
+					{
+						Debug.Log ("Sword swingin'");
+						Vector3 enemyPos = potentialTargets[i].transform.position.normalized;
+						if(Vector3.Angle(enemyPos,shotDir) < 60)
+						{
+							Debug.Log ("Enemy hit");
+							Debug.Log (potentialTargets[i].name);
+							potentialTargets[i].gameObject.GetComponent<Rigidbody>().AddForce((transform.position.normalized - potentialTargets[i].transform.position.normalized) * swordForce,ForceMode.Impulse);
+						}
+					}
+					canShoot = false;
+				break;
+				}
+
+			
+			}
+
+		}
 	}
 }
