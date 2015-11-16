@@ -18,6 +18,12 @@ public class PlayerController : MonoBehaviour
 	public float fxTime;
 
 	public float swordRadius;
+	public enum weaponTypes
+	{
+		Sword,
+		Gun
+	};
+	public weaponTypes weapon;
 
 	float fxTimer;
 	Ray ray;
@@ -27,8 +33,10 @@ public class PlayerController : MonoBehaviour
 	bool canShoot;
 	bool canDodge;
 	bool isDodging;
-	Vector3 dir;
-	public string weapon;
+	Vector3 moveDir;
+	Vector3 shotDir;
+	Vector3 toEnemy;
+	//public string weapon;
 	public float swordForce;
 
 	public float swordCD;
@@ -40,7 +48,7 @@ public class PlayerController : MonoBehaviour
 	void Start () 
 	{
 		canDodge = true;
-		dir = transform.position;
+		moveDir = transform.position;
 		dodgeTimer = 0f;
 		dodgeCDTimer = 0f;
 	}
@@ -73,7 +81,7 @@ public class PlayerController : MonoBehaviour
 
 
 
-		dir = transform.position;
+		moveDir = transform.position;
 
 		if (Input.GetKeyDown(KeyCode.Space) && canDodge == true)
 		{
@@ -112,21 +120,21 @@ public class PlayerController : MonoBehaviour
 		// Axe Horizontal
 		if (Input.GetAxis ("Horizontal") > 0 || Input.GetAxis ("Horizontal") < 0)
 		{
-			dir.x += Input.GetAxis("Horizontal") * playerSpeed * Time.deltaTime;
+			moveDir.x += Input.GetAxis("Horizontal") * playerSpeed * Time.deltaTime;
 		}
 
 		// Axe Vertical
 		if (Input.GetAxis ("Vertical") > 0 || Input.GetAxis ("Vertical") < 0)
 		{
-			dir.y += Input.GetAxis("Vertical") * playerSpeed * Time.deltaTime;
+			moveDir.y += Input.GetAxis("Vertical") * playerSpeed * Time.deltaTime;
 		}
 
 		if (isDodging)
 		{
-			dir.x += Input.GetAxis("Horizontal") * dodgeSpeed * Time.deltaTime;
-			dir.y += Input.GetAxis("Vertical") * dodgeSpeed * Time.deltaTime;
+			moveDir.x += Input.GetAxis("Horizontal") * dodgeSpeed * Time.deltaTime;
+			moveDir.y += Input.GetAxis("Vertical") * dodgeSpeed * Time.deltaTime;
 		}
-		transform.position = dir;
+		transform.position = moveDir;
 
 
 		// Système de tir
@@ -137,17 +145,14 @@ public class PlayerController : MonoBehaviour
 			ray = Camera.main.ScreenPointToRay(Input.mousePosition);
 			if (Physics.Raycast(ray, out hit))
 			{
-				Debug.Log ("Click !!");
-
-
 				Vector3 shotLocation = hit.point;
-				Vector3 shotDir = shotLocation - transform.position;
+				shotDir = shotLocation - transform.position;
 				shotDir.z = 0.9f;
 				shotDir = shotDir.normalized;
 
 				switch(weapon)
 				{
-				case "Gun":
+				case weaponTypes.Gun:
 					shotCD = 0.15f;
 					GameObject clone = Instantiate (shot, transform.position, transform.rotation) as GameObject;
 					clone.GetComponent<Rigidbody>().AddForce(shotDir * shotSpeed);
@@ -155,20 +160,15 @@ public class PlayerController : MonoBehaviour
 				
 				break;
 
-				case "Sword":
+				case weaponTypes.Sword:
 					shotCD = swordCD;
-
-					Debug.Log ("Attempt to attack");
-					Collider[] potentialTargets = Physics.OverlapSphere(transform.position,swordRadius);
+					Collider[] potentialTargets = Physics.OverlapSphere(transform.position,swordRadius, 1<<10);
 					for (int i =0; i< potentialTargets.Length; i++) 
 					{
-						Debug.Log ("Sword swingin'");
-						Vector3 enemyPos = potentialTargets[i].transform.position.normalized;
-						if(Vector3.Angle(enemyPos,shotDir) < 60)
+						Vector3 enemyPos = potentialTargets[i].transform.position - transform.position;
+						if(Vector3.Angle(enemyPos.normalized,shotDir.normalized) < 45)
 						{
-							Debug.Log ("Enemy hit");
-							Debug.Log (potentialTargets[i].name);
-							potentialTargets[i].gameObject.GetComponent<Rigidbody>().AddForce((transform.position.normalized - potentialTargets[i].transform.position.normalized) * swordForce,ForceMode.Impulse);
+							potentialTargets[i].gameObject.GetComponent<Rigidbody>().AddForce((potentialTargets[i].transform.position - transform.position).normalized * swordForce/*,ForceMode.Impulse*/);
 						}
 					}
 					canShoot = false;
@@ -179,5 +179,10 @@ public class PlayerController : MonoBehaviour
 			}
 
 		}
+	}
+	void OnDrawGizmos()
+	{
+		Gizmos.color = Color.red;
+		Gizmos.DrawLine(transform.position, transform.position + shotDir);
 	}
 }

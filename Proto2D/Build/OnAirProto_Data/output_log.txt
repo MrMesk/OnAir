@@ -1,0 +1,32 @@
+Mono path[0] = 'F:/ProjectUnity/OnAir/Proto2D/Build/OnAirProto_Data/Managed'
+Mono path[1] = 'F:/ProjectUnity/OnAir/Proto2D/Build/OnAirProto_Data/Mono'
+Mono config path = 'F:/ProjectUnity/OnAir/Proto2D/Build/OnAirProto_Data/Mono/etc'
+PlayerConnection initialized from F:/ProjectUnity/OnAir/Proto2D/Build/OnAirProto_Data (debug = 0)
+PlayerConnection initialized network socket : 0.0.0.0 55238
+Broadcasting "[IP] 169.254.152.170 [Port] 55238 [Flags] 2 [Guid] 3591029338 [EditorId] 469039087 [Version] 1048832 [Id] WindowsPlayer(BeardMage) [Debug] 0" to [169.254.255.255:54997]...
+PlayerConnection already initialized - listening to [169.254.152.170:55238]
+Initialize engine version: 5.2.0f3 (e7947df39b5c)
+GfxDevice: creating device client; threaded=1
+Direct3D:
+    Version:  Direct3D 11.0 [level 11.0]
+    Renderer: AMD Radeon HD 8650G (ID=0x990b)
+    Vendor:   ATI
+    VRAM:     2665 MB
+Begin MonoManager ReloadAssembly
+Platform assembly: F:\ProjectUnity\OnAir\Proto2D\Build\OnAirProto_Data\Managed\UnityEngine.dll (this message is harmless)
+Loading F:\ProjectUnity\OnAir\Proto2D\Build\OnAirProto_Data\Managed\UnityEngine.dll into Unity Child Domain
+Platform assembly: F:\ProjectUnity\OnAir\Proto2D\Build\OnAirProto_Data\Managed\Assembly-CSharp.dll (this message is harmless)
+Loading F:\ProjectUnity\OnAir\Proto2D\Build\OnAirProto_Data\Managed\Assembly-CSharp.dll into Unity Child Domain
+Platform assembly: F:\ProjectUnity\OnAir\Proto2D\Build\OnAirProto_Data\Managed\UnityEngine.UI.dll (this message is harmless)
+Loading F:\ProjectUnity\OnAir\Proto2D\Build\OnAirProto_Data\Managed\UnityEngine.UI.dll into Unity Child Domain
+Platform assembly: F:\ProjectUnity\OnAir\Proto2D\Build\OnAirProto_Data\Managed\UnityEngine.Networking.dll (this message is harmless)
+Loading F:\ProjectUnity\OnAir\Proto2D\Build\OnAirProto_Data\Managed\UnityEngine.Networking.dll into Unity Child Domain
+Platform assembly: F:\ProjectUnity\OnAir\Proto2D\Build\OnAirProto_Data\Managed\System.Core.dll (this message is harmless)
+- Completed reload, in  0.104 seconds
+desktop: 1920x1080 60Hz; virtual: 1920x1080 at 0,0
+<RI> Initializing input.
+<RI> Input initialized.
+<RI> Initialized touch support.
+Platform assembly: F:\ProjectUnity\OnAir\Proto2D\Build\OnAirProto_Data\Managed\System.dll (this message is harmless)
+Setting up 1 worker threads for Enlighten.
+  Thread -> id: 95b0 -> priority: 1 
