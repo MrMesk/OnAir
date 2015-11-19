@@ -179,6 +179,14 @@ public class PlayerController : MonoBehaviour
 			}
 
 		}
+		if(Input.GetMouseButtonDown (1))
+		{
+			if(weapon == weaponTypes.Sword)
+			{
+				weapon = weaponTypes.Gun;
+			}
+			else weapon = weaponTypes.Sword;
+		}
 	}
 	void OnDrawGizmos()
 	{

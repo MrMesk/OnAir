@@ -4,31 +4,37 @@ using System.Collections;
 public class BulletRIP : MonoBehaviour 
 {
 	public float lifeTime;
+	bool toDestroy;
 	float lifeTimer;
 
 	// Use this for initialization
 	void Start () 
 	{
+		toDestroy = false;
 		lifeTimer = 0f;
 	}
 	
 	// Update is called once per frame
 	void Update () 
 	{
-		lifeTimer += Time.deltaTime;
-
-		if (lifeTimer >= lifeTime )
+		if(toDestroy)
 		{
-			Destroy (this.gameObject);
+			lifeTimer += Time.deltaTime;
+			if (lifeTimer >= lifeTime )
+			{
+				Destroy (this.gameObject);
+			}
 		}
 	}
 
-	void OnTriggerEnter (Collider other)
+	void OnCollisionEnter (Collision other)
 	{
-		if ( other.tag == "Enemy" )
+		if ( other.gameObject.tag == "Enemy" )
 		{
+			Destroy (this.gameObject);
 			Destroy (other.gameObject);
 		}
-		Destroy (this.gameObject);
+		else toDestroy = true;
+
 	}
 }
