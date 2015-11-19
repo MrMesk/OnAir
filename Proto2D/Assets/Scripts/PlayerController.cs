@@ -126,13 +126,13 @@ public class PlayerController : MonoBehaviour
 		// Axe Vertical
 		if (Input.GetAxis ("Vertical") > 0 || Input.GetAxis ("Vertical") < 0)
 		{
-			moveDir.y += Input.GetAxis("Vertical") * playerSpeed * Time.deltaTime;
+			moveDir.z += Input.GetAxis("Vertical") * playerSpeed * Time.deltaTime;
 		}
 
 		if (isDodging)
 		{
 			moveDir.x += Input.GetAxis("Horizontal") * dodgeSpeed * Time.deltaTime;
-			moveDir.y += Input.GetAxis("Vertical") * dodgeSpeed * Time.deltaTime;
+			moveDir.z += Input.GetAxis("Vertical") * dodgeSpeed * Time.deltaTime;
 		}
 		transform.position = moveDir;
 
@@ -147,7 +147,6 @@ public class PlayerController : MonoBehaviour
 			{
 				Vector3 shotLocation = hit.point;
 				shotDir = shotLocation - transform.position;
-				shotDir.z = 0.9f;
 				shotDir = shotDir.normalized;
 
 				switch(weapon)
