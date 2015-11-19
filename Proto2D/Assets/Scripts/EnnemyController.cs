@@ -42,7 +42,7 @@ public class EnnemyController : MonoBehaviour {
         Attack
     }
 
-    public EnemyState states;
+    private EnemyState states;
 
 
     // Use this for initialization
@@ -115,13 +115,14 @@ public class EnnemyController : MonoBehaviour {
 
     void Roam ()
     {
+        _agent.stoppingDistance = 0;
         if ((Vector3.Distance(_agent.transform.position, _agent.destination) < 1.5f))
         {
             dest = controlPoint + (Random.insideUnitSphere * RoamRadius);
-            NavMeshHit hit;
-            if (NavMesh.SamplePosition(dest, out hit, 1.5f, NavMesh.AllAreas))
+            NavMeshHit hitRoam;
+            if (NavMesh.SamplePosition(dest, out hitRoam, 1.5f, NavMesh.AllAreas))
             {
-                _agent.SetDestination(hit.position);
+                _agent.SetDestination(hitRoam.position);
             }
         }
     }
@@ -134,10 +135,10 @@ public class EnnemyController : MonoBehaviour {
         {
             if (target.name == "Player")
             {
-                NavMeshHit hit;
-                if (NavMesh.SamplePosition(_player.transform.position, out hit, 1.5f, NavMesh.AllAreas))
+                NavMeshHit hitAttack;
+                if (NavMesh.SamplePosition(_player.transform.position, out hitAttack, 1.5f, NavMesh.AllAreas))
                 {
-                    _agent.SetDestination(hit.position);
+                    _agent.SetDestination(hitAttack.position);
                 }
             }
         }
@@ -149,9 +150,8 @@ public class EnnemyController : MonoBehaviour {
         shotDir = shotDir.normalized;
         if (canShoot)
         {
-            if (Random.Range(0,1) < shotRate)
+            if (Random.Range(0,1.1f) < shotRate)
             {
-                shotCD = 0.15f;
                 GameObject clone = Instantiate(shot, transform.position, transform.rotation) as GameObject;
                 clone.GetComponent<Rigidbody>().AddForce(shotDir * shotSpeed);
                 canShoot = false;
@@ -160,7 +160,7 @@ public class EnnemyController : MonoBehaviour {
 
 
         /////   Esquive
-        RaycastHit hit;
+        /*RaycastHit hit;
         if (Physics.Raycast(transform.position, shotDir, out hit))
         {
             if (Random.Range(0,1) < dodgeRate)
@@ -171,6 +171,14 @@ public class EnnemyController : MonoBehaviour {
 
                 }
             }
+        }*/
+
+
+        /////  Retour au roam
+        if (Vector3.Distance(_player.transform.position, transform.position) > distanceVision)
+        {
+            states = EnemyState.Roam;
+            _agent.SetDestination(controlPoint);
         }
     }
 }
