@@ -5,8 +5,8 @@ public class PlayerController : MonoBehaviour
 {
 	public float dodgeCD;
 	public float dodgeDuration;
-	public float shotCD;
 	public float shotSpeed;
+	public GameObject shotgunShell;
 	public float playerSpeed;
 	public float lifePoints;
 	public float dodgeSpeed;
@@ -21,7 +21,8 @@ public class PlayerController : MonoBehaviour
 	public enum weaponTypes
 	{
 		Sword,
-		Gun
+		Gun,
+		ShotGun
 	};
 	public weaponTypes weapon;
 
@@ -41,6 +42,10 @@ public class PlayerController : MonoBehaviour
 
 	public float swordCD;
 	public float gunCD;
+	public float shotgunCD;
+	public float nbShells;
+	public float shotgunSpread;
+	float shotCD;
 	
 
 
@@ -152,7 +157,7 @@ public class PlayerController : MonoBehaviour
 				switch(weapon)
 				{
 				case weaponTypes.Gun:
-					shotCD = 0.15f;
+					shotCD = gunCD;
 					GameObject clone = Instantiate (shot, transform.position, transform.rotation) as GameObject;
 					clone.GetComponent<Rigidbody>().AddForce(shotDir * shotSpeed);
 					canShoot = false;
@@ -167,17 +172,29 @@ public class PlayerController : MonoBehaviour
 						Vector3 enemyPos = potentialTargets[i].transform.position - transform.position;
 						if(Vector3.Angle(enemyPos.normalized,shotDir.normalized) < 45)
 						{
-							potentialTargets[i].gameObject.GetComponent<Rigidbody>().AddForce((potentialTargets[i].transform.position - transform.position).normalized * swordForce/*,ForceMode.Impulse*/);
+							potentialTargets[i].gameObject.GetComponent<Rigidbody>().AddForce((potentialTargets[i].transform.position - transform.position).normalized * swordForce);
 						}
 					}
 					canShoot = false;
 				break;
+				case weaponTypes.ShotGun:
+					shotCD = shotgunCD;
+					for(int i=0;i<nbShells;i++)
+					{
+						float angle = Random.Range (shotgunSpread/-2,shotgunSpread/2);
+						Vector3 dirShot = Quaternion.AngleAxis(angle, transform.up) * shotDir;
+						GameObject shotgun = Instantiate (shotgunShell, transform.position, transform.rotation) as GameObject;
+						shotgun.GetComponent<Rigidbody>().AddForce(dirShot * shotSpeed);
+					}
+					canShoot = false;
+					break;
 				}
-
-			
 			}
 
+			
 		}
+
+	
 		if(Input.GetMouseButtonDown (1))
 		{
 			if(weapon == weaponTypes.Sword)
