@@ -22,13 +22,21 @@ public class EnnemyController : MonoBehaviour {
     private NavMeshAgent _agent;
     private GameObject _player;
 
+    // attack parameter
+    public float attackCD;
+    private float attackTimer;
+
     // shot parameter
     public GameObject shot;
     public float shotRate;
     public float shotCD;
     public float shotSpeed;
+    public int shotNb;
+    private float shotDone = 0;
+    public float shotInterval;
+    private float fuckingTimerAgain = 0;
     private bool canShoot;
-    private float shotTimer;
+    private float shotTimer = 0;
     private Vector3 shotDir;
 
     // dodge parameter
@@ -129,34 +137,47 @@ public class EnnemyController : MonoBehaviour {
 
     void Attack()
     {
-        /////  Positionnement
-        Collider[] targets = Physics.OverlapSphere(this.transform.position, distanceVision);
-        foreach (Collider target in targets)
+        if (attackTimer > attackCD)
         {
-            if (target.name == "Player")
+            /////  Positionnement
+            Collider[] targets = Physics.OverlapSphere(this.transform.position, distanceVision);
+            foreach (Collider target in targets)
             {
-                NavMeshHit hitAttack;
-                if (NavMesh.SamplePosition(_player.transform.position, out hitAttack, 1.5f, NavMesh.AllAreas))
+                if (target.name == "Player")
                 {
-                    _agent.SetDestination(hitAttack.position);
+                    NavMeshHit hitAttack;
+                    if (NavMesh.SamplePosition(_player.transform.position, out hitAttack, 1.5f, NavMesh.AllAreas))
+                    {
+                        _agent.SetDestination(hitAttack.position);
+                    }
                 }
             }
-        }
-        _agent.stoppingDistance = distanceAttaque + Random.Range(-fourchette, fourchette);
+            _agent.stoppingDistance = distanceAttaque + Random.Range(-fourchette, fourchette);
 
-
-        /////  Tir
-        shotDir = _player.transform.position - transform.position;
-        shotDir = shotDir.normalized;
-        if (canShoot)
-        {
-            if (Random.Range(0,1.1f) < shotRate)
+            /////  Tir
+            shotDir = _player.transform.position - transform.position;
+            shotDir = shotDir.normalized;
+            if (canShoot)
             {
-                GameObject clone = Instantiate(shot, transform.position, transform.rotation) as GameObject;
-                clone.GetComponent<Rigidbody>().AddForce(shotDir * shotSpeed);
-                canShoot = false;
+                if (Random.Range(0, 1.1f) < shotRate)
+                {
+                    Tir(shotNb);
+                    canShoot = false;
+                }
             }
+
+            /////  Deplacement
+            dest = controlPoint + (Random.insideUnitSphere * RoamRadius);
+            NavMeshHit hitRoam;
+            if (NavMesh.SamplePosition(dest, out hitRoam, 1.5f, NavMesh.AllAreas))
+            {
+                _agent.SetDestination(hitRoam.position);
+            }
+
+            attackTimer = 0;
         }
+
+        attackTimer += Time.deltaTime;
 
 
         /////   Esquive
@@ -180,5 +201,24 @@ public class EnnemyController : MonoBehaviour {
             states = EnemyState.Roam;
             _agent.SetDestination(controlPoint);
         }
+    }
+
+    // fonction pour tirer nbTir fois
+    void Tir (int nbTir)
+    {
+        shotDone = 0;
+        while (shotDone < shotNb)
+        {
+            fuckingTimerAgain += Time.deltaTime;
+
+            if (fuckingTimerAgain > shotInterval)
+            {
+                GameObject clone = Instantiate(shot, transform.position, transform.rotation) as GameObject;
+                clone.GetComponent<Rigidbody>().AddForce(shotDir * shotSpeed);
+                shotDone++;
+                fuckingTimerAgain = 0;
+            }
+        }
+        
     }
 }
