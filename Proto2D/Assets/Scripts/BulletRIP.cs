@@ -4,6 +4,8 @@ using System.Collections;
 public class BulletRIP : MonoBehaviour 
 {
 	public float lifeTime;
+	public float bouncingLife;
+	float bounceTimer;
 	bool toDestroy;
 	float lifeTimer;
 
@@ -17,10 +19,15 @@ public class BulletRIP : MonoBehaviour
 	// Update is called once per frame
 	void Update () 
 	{
+		lifeTimer += Time.deltaTime;
+		if (lifeTimer >= lifeTime )
+		{
+			Destroy (this.gameObject);
+		}
 		if(toDestroy)
 		{
-			lifeTimer += Time.deltaTime;
-			if (lifeTimer >= lifeTime )
+			bounceTimer += Time.deltaTime;
+			if (bounceTimer >= bouncingLife )
 			{
 				Destroy (this.gameObject);
 			}
