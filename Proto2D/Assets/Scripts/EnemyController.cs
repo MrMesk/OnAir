@@ -136,7 +136,7 @@ public class EnemyController : MonoBehaviour {
             case AttackStates.Wait:     /* L'ennemi est en etat d'attente */
                 Debug.Log("wait");
                 _agent.SetDestination(transform.position);
-                transform.LookAt(_player.transform.position);
+                //transform.LookAt(_player.transform.position);
                 timer += Time.deltaTime;
                 if (timer > timeToAction)
                 {
