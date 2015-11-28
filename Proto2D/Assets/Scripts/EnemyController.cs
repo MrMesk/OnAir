@@ -23,6 +23,8 @@ public class EnemyController : MonoBehaviour {
     public Vector3 controlPoint;
     public float RoamRadius;
     private Vector3 dest;
+    public float timeBetweenRoam;
+    private float timerRoam;
 
     /* Variable pour l'attaque */
     public float timeToAction;
@@ -37,6 +39,7 @@ public class EnemyController : MonoBehaviour {
     private int shotDone;
     private bool shooting;
     private bool moving;
+    public float distMove;
 
     /* State Machine de l'ennemi */
     public enum EnemyStates
@@ -94,16 +97,22 @@ public class EnemyController : MonoBehaviour {
     void Roam()
     {
         _agent.stoppingDistance = 0;
-        if ((Vector3.Distance(_agent.transform.position, _agent.destination) < 1.5f))
+
+        if (timerRoam > timeBetweenRoam)
         {
-            dest = controlPoint + (Random.insideUnitSphere * RoamRadius);
-            NavMeshHit hitRoam;
-            if (NavMesh.SamplePosition(dest, out hitRoam, 1.5f, NavMesh.AllAreas))
+            if ((Vector3.Distance(_agent.transform.position, _agent.destination) < 1.5f))
             {
-                _agent.SetDestination(hitRoam.position);
+                dest = controlPoint + (Random.insideUnitSphere * RoamRadius);
+                NavMeshHit hitRoam;
+                if (NavMesh.SamplePosition(dest, out hitRoam, 1.5f, NavMesh.AllAreas))
+                {
+                    _agent.SetDestination(hitRoam.position);
+                    timerRoam = 0;
+                }
             }
         }
 
+        timerRoam += Time.deltaTime;
 
         Collider[] targets = Physics.OverlapSphere(this.transform.position, distanceVision);
 
@@ -185,16 +194,26 @@ public class EnemyController : MonoBehaviour {
                 _agent.stoppingDistance = 0;
                 if (!moving)
                 {
-                    dest = transform.position + (Random.insideUnitSphere * RoamRadius);
+                    Vector3 dir = _player.transform.position - transform.position;
+                    float tmp = dir.z;
+                    dir.z = -dir.x;
+                    dir.x = tmp;
+
+                    float halfchoice = Random.Range(0.0f, 1.0f);
+                    if (halfchoice < 0.5f)
+                    {
+                        dir = -dir;
+                    }
+
                     NavMeshHit hitRoam;
-                    if (NavMesh.SamplePosition(dest, out hitRoam, 1.5f, NavMesh.AllAreas))
+                    if (NavMesh.SamplePosition(transform.position + dir.normalized * distMove, out hitRoam, 1.5f, NavMesh.AllAreas))
                     {
                         _agent.SetDestination(hitRoam.position);
                         moving = true;
                     }
                 }
 
-                if (Vector3.Distance(_agent.transform.position, _agent.destination) < 1.5f && moving)
+                if (Vector3.Distance(_agent.transform.position, _agent.destination) < 0.6f && moving)
                 {
                     moving = false;
                     actStates = AttackStates.GetCloser;
@@ -240,13 +259,12 @@ public class EnemyController : MonoBehaviour {
 
     void Tir (int nbTir)
     {
-        dirJoueurEnemy = _player.transform.position - transform.position;
-        shotDir = dirJoueurEnemy.normalized;
-
         if (!shooting)
         {
             shotDone = 0;
             shooting = true;
+            dirJoueurEnemy = _player.transform.position - transform.position;
+            shotDir = dirJoueurEnemy.normalized;
         }
 
        if (shotDone < nbTir)
