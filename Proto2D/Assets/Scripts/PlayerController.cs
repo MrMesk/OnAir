@@ -6,11 +6,15 @@ public class PlayerController : MonoBehaviour
 	public float dodgeCD;
 	public float dodgeDuration;
 	public float shotSpeed;
+    public int swordDmg;
+
 	public GameObject shotgunShell;
-	public float playerSpeed;
+    public GameObject shot;
+
+    public float playerSpeed;
 	public float lifePoints;
 	public float dodgeSpeed;
-	public GameObject shot;
+
 
 	public GameObject trailLeft;
 	public GameObject trailRight;
@@ -173,7 +177,8 @@ public class PlayerController : MonoBehaviour
 						if(Vector3.Angle(enemyPos.normalized,shotDir.normalized) < 45)
 						{
 							potentialTargets[i].gameObject.GetComponent<Rigidbody>().AddForce((potentialTargets[i].transform.position - transform.position).normalized * swordForce);
-						}
+                            potentialTargets[i].gameObject.GetComponent<EnemyController>().StartCoroutine(potentialTargets[i].gameObject.GetComponent<EnemyController>().damage(swordDmg));
+                        }
 					}
 					canShoot = false;
 				break;

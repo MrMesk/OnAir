@@ -1,7 +1,15 @@
 ﻿using UnityEngine;
 using System.Collections;
 
-public class EnemyController : MonoBehaviour {
+public class EnemyController : MonoBehaviour
+{
+    public GameObject particleDeath;
+    public int lifePoints;
+    int remainingLife;
+    Color normalColor;
+
+    
+    public Color hitColor;
 
     /* Variable pour les distances */
     public float distanceVision;
@@ -63,10 +71,14 @@ public class EnemyController : MonoBehaviour {
 
 
     // Use this for initialization
-    void Start () {
+    void Start ()
+    {
+        remainingLife = lifePoints;
+        normalColor = GetComponent<Renderer>().material.color;
+
         _agent = GetComponent<NavMeshAgent>();
         _player = GameObject.Find("Player");
-        transform.position = controlPoint;
+        controlPoint = transform.position;
 
         states = EnemyStates.Roam;
         actStates = AttackStates.Wait;
@@ -81,7 +93,7 @@ public class EnemyController : MonoBehaviour {
 	    switch(states)
         {
             case EnemyStates.Roam:
-                Debug.Log("L'IA est en mode roaming.");
+                //Debug.Log("L'IA est en mode roaming.");
                 Roam();
                 break;
 
@@ -143,7 +155,7 @@ public class EnemyController : MonoBehaviour {
         switch(actStates)
         {
             case AttackStates.Wait:     /* L'ennemi est en etat d'attente */
-                Debug.Log("wait");
+                //Debug.Log("wait");
                 _agent.SetDestination(transform.position);
                 //transform.LookAt(_player.transform.position);
                 timer += Time.deltaTime;
@@ -155,7 +167,7 @@ public class EnemyController : MonoBehaviour {
                 break;
 
             case AttackStates.GetCloser:    /* L'ennemi se rapproche */
-                Debug.Log("get closer");
+                //Debug.Log("get closer");
                 NavMeshHit hitAttack;
                 if (NavMesh.SamplePosition(_player.transform.position, out hitAttack, 1.5f, NavMesh.AllAreas))
                 {
@@ -175,7 +187,7 @@ public class EnemyController : MonoBehaviour {
                 break;
 
             case AttackStates.Shoot:    /* L'ennemi attaque si il peut */
-                Debug.Log("shoot");
+                //Debug.Log("shoot");
                 if(VisionOk())
                 {
                     Tir(nbShot);
@@ -190,7 +202,7 @@ public class EnemyController : MonoBehaviour {
                 break;
 
             case AttackStates.Move:
-                Debug.Log("Move");
+                //Debug.Log("Move");
                 _agent.stoppingDistance = 0;
                 if (!moving)
                 {
@@ -271,7 +283,7 @@ public class EnemyController : MonoBehaviour {
         {
             if (timer > shotInterval && shooting)
             {
-                Debug.Log("bang!");
+                //Debug.Log("bang!");
                 GameObject clone = Instantiate(shot, transform.position, transform.rotation) as GameObject;
                 clone.GetComponent<Rigidbody>().AddForce(shotDir * shotSpeed);
                 shotDone++;
@@ -285,6 +297,20 @@ public class EnemyController : MonoBehaviour {
             shooting = false;
             nextStates = AttackStates.Move;
             actStates = AttackStates.Wait;
+        }
+    }
+
+    public IEnumerator damage ( int dmg )
+    {
+        GetComponent<Renderer>().material.color = hitColor;
+        yield return new WaitForSeconds(0.2f);
+        GetComponent<Renderer>().material.color = normalColor;
+
+        remainingLife -= dmg;
+        if (remainingLife <= 0)
+        {
+            Instantiate(particleDeath, transform.position, transform.rotation);
+            Destroy(this.gameObject);  
         }
     }
 }

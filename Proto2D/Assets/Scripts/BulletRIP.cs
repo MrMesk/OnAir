@@ -5,7 +5,9 @@ public class BulletRIP : MonoBehaviour
 {
 	public float lifeTime;
 	public float bouncingLife;
-	float bounceTimer;
+    public int attackPower;
+
+    float bounceTimer;
 	bool toDestroy;
 	float lifeTimer;
 
@@ -38,9 +40,9 @@ public class BulletRIP : MonoBehaviour
 	{
 		if ( other.gameObject.tag == "Enemy" )
 		{
-			Destroy (this.gameObject);
-			Destroy (other.gameObject);
-		}
+            other.gameObject.GetComponent<EnemyController>().StartCoroutine(other.gameObject.GetComponent<EnemyController>().damage(attackPower));
+            Destroy(this.gameObject);
+        }
 		else toDestroy = true;
 
 	}
