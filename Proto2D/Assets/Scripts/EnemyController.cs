@@ -89,7 +89,8 @@ public class EnemyController : MonoBehaviour
 	
 
 	// Update is called once per frame
-	void Update () {
+	void Update ()
+	{
 	    switch(states)
         {
             case EnemyStates.Roam:
@@ -102,6 +103,11 @@ public class EnemyController : MonoBehaviour
                 Attack();
                 break;
         }
+		if (remainingLife <= 0)
+		{
+			Instantiate(particleDeath, transform.position, transform.rotation);
+			Destroy(this.gameObject);
+		}
 	}
 
 
@@ -284,9 +290,16 @@ public class EnemyController : MonoBehaviour
             if (timer > shotInterval && shooting)
             {
                 //Debug.Log("bang!");
-                GameObject clone = Instantiate(shot, transform.position, transform.rotation) as GameObject;
-                clone.GetComponent<Rigidbody>().AddForce(shotDir * shotSpeed);
-                shotDone++;
+                //GameObject clone = Instantiate(shot, transform.position, transform.rotation) as GameObject;
+               // clone.GetComponent<Rigidbody>().AddForce(shotDir * shotSpeed);
+
+				GameObject clone = ObjectPooler.current.GetObject(shot);
+				clone.SetActive(true);
+				clone.transform.position = transform.position;
+				clone.transform.rotation = transform.rotation;
+				clone.GetComponent<Rigidbody>().velocity = (shotDir * shotSpeed);
+
+				shotDone++;
                 timer = 0;
             }
             timer += Time.deltaTime;
@@ -302,15 +315,17 @@ public class EnemyController : MonoBehaviour
 
     public IEnumerator damage ( int dmg )
     {
+        //Debug.Log("Enemy is taking " + dmg + " damage");
         GetComponent<Renderer>().material.color = hitColor;
         yield return new WaitForSeconds(0.2f);
         GetComponent<Renderer>().material.color = normalColor;
 
         remainingLife -= dmg;
-        if (remainingLife <= 0)
-        {
-            Instantiate(particleDeath, transform.position, transform.rotation);
-            Destroy(this.gameObject);  
-        }
+
+		if(states != EnemyStates.Attack)
+		{
+			states = EnemyStates.Attack;
+		}
+        
     }
 }
