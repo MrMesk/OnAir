@@ -47,7 +47,7 @@ public class PyroShaman : MonoBehaviour
 		if(Vector3.Distance(_player.transform.position, transform.position) < aggroRange)
 		{
 			RaycastHit hit;
-			if(Physics.Raycast(transform.position, _player.transform.position, out hit))
+			if(Physics.Raycast(transform.position, (_player.transform.position - transform.position), out hit))
 			{
 				if(hit.collider.tag == "Player")
 				{
@@ -73,4 +73,6 @@ public class PyroShaman : MonoBehaviour
 		else state = EnemyStates.Idle;
 		
 	}
+
+
 }

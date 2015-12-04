@@ -3,12 +3,9 @@ using System.Collections;
 
 public class EnemyController : MonoBehaviour
 {
-<<<<<<< HEAD
-  
+
 	public float dodgeAngle = 15f;
 
-=======
->>>>>>> origin/master
     /* Variable pour les distances */
     [Header("Distances")]
     public float distanceVision;
@@ -53,7 +50,6 @@ public class EnemyController : MonoBehaviour
 	public float dodgeRate;
 	public float dodgeDist;
 	public float dodgeForce;
-    public float dodgeAngle = 15f;
 
     public float dodgeCD;
 	private float timerDodge;
@@ -81,11 +77,6 @@ public class EnemyController : MonoBehaviour
     // Use this for initialization
     void Start ()
     {
-<<<<<<< HEAD
-        
-
-=======
->>>>>>> origin/master
 		_agent = GetComponent<NavMeshAgent>();
         _player = GameObject.Find("Player");
         controlPoint = transform.position;
@@ -113,10 +104,6 @@ public class EnemyController : MonoBehaviour
                 Attack();
                 break;
         }
-<<<<<<< HEAD
-		
-=======
->>>>>>> origin/master
 		pos = transform.position;
 		pos.y = 0f;
 		transform.position = pos;
@@ -373,11 +360,6 @@ public class EnemyController : MonoBehaviour
             actStates = AttackStates.Wait;
         }
     }
-
-<<<<<<< HEAD
-    
-=======
->>>>>>> origin/master
 
 	void OnDrawGizmos ()
 	{
