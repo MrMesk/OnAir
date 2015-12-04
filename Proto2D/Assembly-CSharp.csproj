@@ -45,6 +45,7 @@
 	</Reference>
   </ItemGroup>
   <ItemGroup>
+     <Compile Include="Assets\GoToChild.cs" />
      <Compile Include="Assets\Scripts\Boomerang.cs" />
      <Compile Include="Assets\Scripts\BulletRIP.cs" />
      <Compile Include="Assets\Scripts\CameraZoom.cs" />
@@ -56,6 +57,7 @@
      <Compile Include="Assets\Scripts\PlayerController.cs" />
      <Compile Include="Assets\Scripts\ProceduralCreate.cs" />
      <Compile Include="Assets\Scripts\PsychicSphere.cs" />
+     <Compile Include="Assets\StickToRot.cs" />
  <Reference Include="UnityEngine.UI">
  <HintPath>C:/Program Files/Unity/Editor/Data/UnityExtensions/Unity/GUISystem/UnityEngine.UI.dll</HintPath>
  </Reference>

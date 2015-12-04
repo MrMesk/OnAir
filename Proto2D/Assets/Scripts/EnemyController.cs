@@ -10,6 +10,8 @@ public class EnemyController : MonoBehaviour
 
     
     public Color hitColor;
+	public GameObject skin;
+	public float dodgeAngle = 15f;
 
     /* Variable pour les distances */
     public float distanceVision;
@@ -49,6 +51,13 @@ public class EnemyController : MonoBehaviour
     private bool moving;
     public float distMove;
 
+	public float dodgeRate;
+	public float dodgeDist;
+	public float dodgeForce;
+
+	public float dodgeCD;
+	private float timerDodge;
+
     /* State Machine de l'ennemi */
     public enum EnemyStates
     {
@@ -63,25 +72,24 @@ public class EnemyController : MonoBehaviour
         Wait,
         GetCloser,
         Shoot,
-        Dodge,
         Move
     }
-    private AttackStates actStates;
+    private AttackStates attStates;
     private AttackStates nextStates;
-
+	Vector3 pos;
 
     // Use this for initialization
     void Start ()
     {
         remainingLife = lifePoints;
-        normalColor = GetComponent<Renderer>().material.color;
+        normalColor = skin.GetComponent<Renderer>().material.color;
 
-        _agent = GetComponent<NavMeshAgent>();
+		_agent = GetComponent<NavMeshAgent>();
         _player = GameObject.Find("Player");
         controlPoint = transform.position;
 
         states = EnemyStates.Roam;
-        actStates = AttackStates.Wait;
+        attStates = AttackStates.Wait;
 
         shooting = false;
         moving = false;
@@ -108,6 +116,11 @@ public class EnemyController : MonoBehaviour
 			Instantiate(particleDeath, transform.position, transform.rotation);
 			Destroy(this.gameObject);
 		}
+		pos = transform.position;
+		pos.y = 0f;
+
+		transform.position = pos;
+	
 	}
 
 
@@ -158,7 +171,7 @@ public class EnemyController : MonoBehaviour
     // Fonction qui gere l'attaque de l'ennemi
     void Attack()
     {
-        switch(actStates)
+        switch(attStates)
         {
             case AttackStates.Wait:     /* L'ennemi est en etat d'attente */
                 //Debug.Log("wait");
@@ -168,7 +181,7 @@ public class EnemyController : MonoBehaviour
                 if (timer > timeToAction)
                 {
                     timer = 0;
-                    actStates = nextStates;
+                    attStates = nextStates;
                 }
                 break;
 
@@ -187,7 +200,7 @@ public class EnemyController : MonoBehaviour
                     if (target.name == "Player")
                     {
                         nextStates = AttackStates.Shoot;
-                        actStates = AttackStates.Wait;
+                        attStates = AttackStates.Wait;
                     }
                 }
                 break;
@@ -202,13 +215,16 @@ public class EnemyController : MonoBehaviour
                 if (!shooting)
                 {
                     nextStates = AttackStates.Move;
-                    actStates = AttackStates.Wait;
+                    attStates = AttackStates.Wait;
                 }
                 
                 break;
 
             case AttackStates.Move:
                 //Debug.Log("Move");
+				//Debug.Log(_agent.destination);
+				//Debug.Log(_agent.remainingDistance);
+				//Debug.Log(moving);
                 _agent.stoppingDistance = 0;
                 if (!moving)
                 {
@@ -223,23 +239,19 @@ public class EnemyController : MonoBehaviour
                         dir = -dir;
                     }
 
-                    NavMeshHit hitRoam;
-                    if (NavMesh.SamplePosition(transform.position + dir.normalized * distMove, out hitRoam, 1.5f, NavMesh.AllAreas))
-                    {
-                        _agent.SetDestination(hitRoam.position);
-                        moving = true;
-                    }
+                   
+                    _agent.SetDestination(transform.position + (dir.normalized * distMove));
+                    moving = true;
+
                 }
 
-                if (Vector3.Distance(_agent.transform.position, _agent.destination) < 0.6f && moving)
+                if (Vector3.Distance(transform.position, _agent.destination) < 1.2f && moving)
                 {
                     moving = false;
-                    actStates = AttackStates.GetCloser;
+                    attStates = AttackStates.GetCloser;
                 }
                 break;
-
-            case AttackStates.Dodge:
-                break;
+				
         }
 
 
@@ -249,14 +261,55 @@ public class EnemyController : MonoBehaviour
             if (timerFollow > timeFollowingPlayer)
             {
                 states = EnemyStates.Roam;
-                actStates = AttackStates.Wait;
+                attStates = AttackStates.Wait;
             }
         }
         else
         {
             timerFollow = 0;
         }
-    }
+
+		Collider[] colls = Physics.OverlapSphere(transform.position, dodgeDist);
+		foreach (Collider coll in colls)
+		{
+			if (coll.gameObject.tag == "PlayerBullet")
+			{
+				//Debug.Log("Bullet in area");
+				if (Vector3.Angle(coll.GetComponent<Rigidbody>().velocity.normalized, (transform.position - coll.transform.position).normalized) <= dodgeAngle)
+				{
+					//Debug.Log("in angle");
+
+					Vector3 dir = coll.transform.position - transform.position;
+					float tmp = dir.z;
+					dir.z = -dir.x;
+					dir.x = tmp;
+
+					float halfchoice = Random.Range(0.0f, 1.0f);
+					if (halfchoice < 0.5f)
+					{
+						dir = -dir;
+					}
+
+
+					RaycastHit hit;
+					if(Physics.Raycast(transform.position, dir, out hit, dodgeForce))
+					{
+						Debug.Log("plop");
+						dir = -dir;
+					}
+
+					float changeDodge = Random.Range(0.0f, 1.0f);
+					if (changeDodge < dodgeRate && timerDodge > dodgeCD)
+					{
+						//Debug.Log("Avoid");
+						transform.GetComponent<Rigidbody>().velocity = dir * dodgeForce;
+						timerDodge = 0;
+					}
+				}
+			}
+		}
+		timerDodge += Time.deltaTime;
+	}
 
 
     /* Fonction pour savoir si l'ennemi peut tirer sur le joueur */
@@ -309,23 +362,34 @@ public class EnemyController : MonoBehaviour
         {
             shooting = false;
             nextStates = AttackStates.Move;
-            actStates = AttackStates.Wait;
+            attStates = AttackStates.Wait;
         }
     }
 
     public IEnumerator damage ( int dmg )
     {
-        //Debug.Log("Enemy is taking " + dmg + " damage");
-        GetComponent<Renderer>().material.color = hitColor;
-        yield return new WaitForSeconds(0.2f);
-        GetComponent<Renderer>().material.color = normalColor;
+		Renderer sprite;
+
+		//Debug.Log("Enemy is taking " + dmg + " damage");
+		skin.GetComponent<Renderer>().material.color = hitColor;
+		yield return new WaitForSeconds(0.2f);
+		skin.GetComponent<Renderer>().material.color = normalColor;
 
         remainingLife -= dmg;
 
 		if(states != EnemyStates.Attack)
 		{
 			states = EnemyStates.Attack;
+			nextStates = AttackStates.Move;
+			attStates = AttackStates.Wait;
 		}
         
     }
+
+	void OnDrawGizmos ()
+	{
+		//Gizmos.color = Color.red;
+		//Gizmos.DrawSphere(_agent.destination, 1.0f);
+
+	}
 }
