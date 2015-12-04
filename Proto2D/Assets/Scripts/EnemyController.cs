@@ -3,17 +3,8 @@ using System.Collections;
 
 public class EnemyController : MonoBehaviour
 {
-    public GameObject particleDeath;
-    public int lifePoints;
-    int remainingLife;
-    Color normalColor;
-
-    
-    public Color hitColor;
-	public GameObject skin;
-	public float dodgeAngle = 15f;
-
     /* Variable pour les distances */
+    [Header("Distances")]
     public float distanceVision;
     public float distanceAttaque;
     public float fourchette;
@@ -26,10 +17,12 @@ public class EnemyController : MonoBehaviour
     private float timer;
 
     // Timer pour le temps avant d'arrêter de suivre le joueur
+    [Header("Temps de poursuite")]
     public float timeFollowingPlayer;
     private float timerFollow;
 
     /* Variable pour le Roam */
+    [Header("Variables de Roam")]
     public Vector3 controlPoint;
     public float RoamRadius;
     private Vector3 dest;
@@ -37,8 +30,8 @@ public class EnemyController : MonoBehaviour
     private float timerRoam;
 
     /* Variable pour l'attaque */
+    [Header("Variables d'attaque")]
     public float timeToAction;
-
     public GameObject shot;
     public float shotSpeed;
     public float shotInterval;
@@ -54,8 +47,9 @@ public class EnemyController : MonoBehaviour
 	public float dodgeRate;
 	public float dodgeDist;
 	public float dodgeForce;
+    public float dodgeAngle = 15f;
 
-	public float dodgeCD;
+    public float dodgeCD;
 	private float timerDodge;
 
     /* State Machine de l'ennemi */
@@ -81,9 +75,6 @@ public class EnemyController : MonoBehaviour
     // Use this for initialization
     void Start ()
     {
-        remainingLife = lifePoints;
-        normalColor = skin.GetComponent<Renderer>().material.color;
-
 		_agent = GetComponent<NavMeshAgent>();
         _player = GameObject.Find("Player");
         controlPoint = transform.position;
@@ -111,12 +102,6 @@ public class EnemyController : MonoBehaviour
                 Attack();
                 break;
         }
-		if (remainingLife <= 0)
-		{
-			Instantiate(particleDeath, transform.position, transform.rotation);
-			Destroy(this.gameObject);
-		}
-
 		pos = transform.position;
 		pos.y = 0f;
 		transform.position = pos;
@@ -374,25 +359,6 @@ public class EnemyController : MonoBehaviour
         }
     }
 
-    public IEnumerator damage ( int dmg )
-    {
-		Renderer sprite;
-
-		//Debug.Log("Enemy is taking " + dmg + " damage");
-		skin.GetComponent<Renderer>().material.color = hitColor;
-		yield return new WaitForSeconds(0.2f);
-		skin.GetComponent<Renderer>().material.color = normalColor;
-
-        remainingLife -= dmg;
-
-		if(states != EnemyStates.Attack)
-		{
-			states = EnemyStates.Attack;
-            actStates = AttackStates.Wait;
-			nextStates = AttackStates.GetCloser;
-		}
-        
-    }
 
 	void OnDrawGizmos ()
 	{
