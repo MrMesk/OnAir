@@ -26,7 +26,7 @@ public class EnemyController : MonoBehaviour
 
     /* Variable pour le Roam */
     [Header("Variables de Roam")]
-    public Vector3 controlPoint;
+    private Vector3 controlPoint;
     public float RoamRadius;
     private Vector3 dest;
     public float timeBetweenRoam;
