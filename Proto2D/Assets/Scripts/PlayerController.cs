@@ -44,7 +44,6 @@ public class PlayerController : MonoBehaviour
 	public int swordDmg;
 
 	[Header("Player Stats")]
-	public int lifePoints;
 	public float playerSpeed;
 	public float dodgeSpeed;
 	public float dodgeCD;
@@ -55,8 +54,6 @@ public class PlayerController : MonoBehaviour
 	public GameObject trailRight;
 	public GameObject trailMid;
 	public float fxTime;
-
-	int actualHealth;
 
 	float shotCD;
 	float fxTimer;
@@ -76,7 +73,6 @@ public class PlayerController : MonoBehaviour
 	// Use this for initialization
 	void Start () 
 	{
-		actualHealth = lifePoints;
 		audioPlayer = GetComponent<AudioSource>();
 		canDodge = true;
 		moveDir = transform.position;
@@ -90,11 +86,6 @@ public class PlayerController : MonoBehaviour
 		DodgeManage();
 		MoveManage();
 		WeaponManage();
-
-		if(actualHealth <= 0)
-		{
-			Debug.Log("RIP In Pieces");
-		}
     }
 
 	void DodgeManage()
@@ -233,7 +224,7 @@ public class PlayerController : MonoBehaviour
 							if (Vector3.Angle(enemyPos.normalized, shotDir.normalized) < 45)
 							{
 								potentialTargets[i].gameObject.GetComponent<Rigidbody>().AddForce((potentialTargets[i].transform.position - transform.position).normalized * swordForce);
-								potentialTargets[i].gameObject.GetComponent<EnemyController>().StartCoroutine(potentialTargets[i].gameObject.GetComponent<EnemyController>().damage(swordDmg));
+								potentialTargets[i].gameObject.GetComponent<LifeManager>().StartCoroutine(potentialTargets[i].gameObject.GetComponent<LifeManager>().damage(swordDmg));
 							}
 						}
 						audioPlayer.PlayOneShot(swordWhoosh);
@@ -279,9 +270,4 @@ public class PlayerController : MonoBehaviour
 		//Gizmos.DrawLine(transform.position, transform.position + shotDir);
 	}
 
-	public void damagePlayer(int dmg)
-	{
-		actualHealth -= dmg;
-		// audioPlayer.PlayOneShot(ouch); // A décommenter quand intégré
-	}
 }

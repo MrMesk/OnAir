@@ -33,7 +33,7 @@ public class PsychicSphere : MonoBehaviour
 
     void OnTriggerEnter(Collider other)
     {
-        if(other.tag == "Enemy") other.gameObject.GetComponent<EnemyController>().StartCoroutine(other.gameObject.GetComponent<EnemyController>().damage(damage));
+        if(other.tag == "Enemy") other.gameObject.GetComponent<LifeManager>().StartCoroutine(other.gameObject.GetComponent<LifeManager>().damage(damage));
     }
     void OnTriggerStay(Collider other)
     {
@@ -42,7 +42,7 @@ public class PsychicSphere : MonoBehaviour
             timer += Time.deltaTime;
             if (timer >= hitRate)
             {
-                other.gameObject.GetComponent<EnemyController>().StartCoroutine(other.gameObject.GetComponent<EnemyController>().damage(damage));
+                other.gameObject.GetComponent<LifeManager>().StartCoroutine(other.gameObject.GetComponent<LifeManager>().damage(damage));
                 timer = 0f;
             }
         }

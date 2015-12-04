@@ -108,7 +108,8 @@ public class EnemyBullet : MonoBehaviour
 	{
 		if(other.gameObject.tag == "Player")
 		{
-			other.gameObject.GetComponent<PlayerController>().damagePlayer(dmg);
+			other.gameObject.GetComponent<LifeManager>().StartCoroutine(other.gameObject.GetComponent<LifeManager>().damage(dmg));
+			//other.gameObject.GetComponent<PlayerController>().damagePlayer(dmg);
 			ObjectPooler.current.PoolObject(gameObject);
 		}
 		else if(other.gameObject.tag == "Wall")

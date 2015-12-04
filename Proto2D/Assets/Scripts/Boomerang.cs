@@ -68,7 +68,7 @@ public class Boomerang : MonoBehaviour
 
 	void OnTriggerEnter(Collider other)
 	{
-		if (other.tag == "Enemy") other.gameObject.GetComponent<EnemyController>().StartCoroutine(other.gameObject.GetComponent<EnemyController>().damage(damage));
+		if (other.tag == "Enemy") other.gameObject.GetComponent<LifeManager>().StartCoroutine(other.gameObject.GetComponent<LifeManager>().damage(damage));
 		else if (other.tag == "Wall") isGoing = false;
 	}
 	void OnTriggerStay(Collider other)
@@ -78,7 +78,7 @@ public class Boomerang : MonoBehaviour
 			timer += Time.deltaTime;
 			if (timer >= hitRate)
 			{
-				other.gameObject.GetComponent<EnemyController>().StartCoroutine(other.gameObject.GetComponent<EnemyController>().damage(damage));
+				other.gameObject.GetComponent<LifeManager>().StartCoroutine(other.gameObject.GetComponent<LifeManager>().damage(damage));
 				timer = 0f;
 			}
 		}

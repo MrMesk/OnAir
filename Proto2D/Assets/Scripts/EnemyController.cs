@@ -3,14 +3,7 @@ using System.Collections;
 
 public class EnemyController : MonoBehaviour
 {
-    public GameObject particleDeath;
-    public int lifePoints;
-    int remainingLife;
-    Color normalColor;
-
-    
-    public Color hitColor;
-	public GameObject skin;
+  
 	public float dodgeAngle = 15f;
 
     /* Variable pour les distances */
@@ -81,8 +74,7 @@ public class EnemyController : MonoBehaviour
     // Use this for initialization
     void Start ()
     {
-        remainingLife = lifePoints;
-        normalColor = skin.GetComponent<Renderer>().material.color;
+        
 
 		_agent = GetComponent<NavMeshAgent>();
         _player = GameObject.Find("Player");
@@ -111,11 +103,7 @@ public class EnemyController : MonoBehaviour
                 Attack();
                 break;
         }
-		if (remainingLife <= 0)
-		{
-			Instantiate(particleDeath, transform.position, transform.rotation);
-			Destroy(this.gameObject);
-		}
+		
 		pos = transform.position;
 		pos.y = 0f;
 
@@ -366,25 +354,7 @@ public class EnemyController : MonoBehaviour
         }
     }
 
-    public IEnumerator damage ( int dmg )
-    {
-		Renderer sprite;
-
-		//Debug.Log("Enemy is taking " + dmg + " damage");
-		skin.GetComponent<Renderer>().material.color = hitColor;
-		yield return new WaitForSeconds(0.2f);
-		skin.GetComponent<Renderer>().material.color = normalColor;
-
-        remainingLife -= dmg;
-
-		if(states != EnemyStates.Attack)
-		{
-			states = EnemyStates.Attack;
-			nextStates = AttackStates.Move;
-			attStates = AttackStates.Wait;
-		}
-        
-    }
+    
 
 	void OnDrawGizmos ()
 	{

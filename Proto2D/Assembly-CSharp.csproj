@@ -52,11 +52,14 @@
      <Compile Include="Assets\Scripts\ChangeValue.cs" />
      <Compile Include="Assets\Scripts\EnemyBullet.cs" />
      <Compile Include="Assets\Scripts\EnemyController.cs" />
+     <Compile Include="Assets\Scripts\LifeManager.cs" />
      <Compile Include="Assets\Scripts\ObjectPooler.cs" />
      <Compile Include="Assets\Scripts\ParticleRIP.cs" />
      <Compile Include="Assets\Scripts\PlayerController.cs" />
      <Compile Include="Assets\Scripts\ProceduralCreate.cs" />
      <Compile Include="Assets\Scripts\PsychicSphere.cs" />
+     <Compile Include="Assets\Scripts\PyroBallEnemy.cs" />
+     <Compile Include="Assets\Scripts\PyroShaman.cs" />
      <Compile Include="Assets\StickToRot.cs" />
  <Reference Include="UnityEngine.UI">
  <HintPath>C:/Program Files/Unity/Editor/Data/UnityExtensions/Unity/GUISystem/UnityEngine.UI.dll</HintPath>

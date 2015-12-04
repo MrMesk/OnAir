@@ -45,7 +45,7 @@ public class BulletRIP : MonoBehaviour
 	{
 		if ( other.gameObject.tag == "Enemy" )
 		{
-            other.gameObject.GetComponent<EnemyController>().StartCoroutine(other.gameObject.GetComponent<EnemyController>().damage(attackPower));
+            other.gameObject.GetComponent<LifeManager>().StartCoroutine(other.gameObject.GetComponent<LifeManager>().damage(attackPower));
 			GetComponent<Rigidbody>().velocity = Vector3.zero;
 			ObjectPooler.current.PoolObject(gameObject);
         }
