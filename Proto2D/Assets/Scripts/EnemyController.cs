@@ -3,10 +3,14 @@ using System.Collections;
 
 public class EnemyController : MonoBehaviour
 {
+<<<<<<< HEAD
   
 	public float dodgeAngle = 15f;
 
+=======
+>>>>>>> origin/master
     /* Variable pour les distances */
+    [Header("Distances")]
     public float distanceVision;
     public float distanceAttaque;
     public float fourchette;
@@ -19,10 +23,12 @@ public class EnemyController : MonoBehaviour
     private float timer;
 
     // Timer pour le temps avant d'arrêter de suivre le joueur
+    [Header("Temps de poursuite")]
     public float timeFollowingPlayer;
     private float timerFollow;
 
     /* Variable pour le Roam */
+    [Header("Variables de Roam")]
     public Vector3 controlPoint;
     public float RoamRadius;
     private Vector3 dest;
@@ -30,8 +36,8 @@ public class EnemyController : MonoBehaviour
     private float timerRoam;
 
     /* Variable pour l'attaque */
+    [Header("Variables d'attaque")]
     public float timeToAction;
-
     public GameObject shot;
     public float shotSpeed;
     public float shotInterval;
@@ -47,8 +53,9 @@ public class EnemyController : MonoBehaviour
 	public float dodgeRate;
 	public float dodgeDist;
 	public float dodgeForce;
+    public float dodgeAngle = 15f;
 
-	public float dodgeCD;
+    public float dodgeCD;
 	private float timerDodge;
 
     /* State Machine de l'ennemi */
@@ -67,21 +74,24 @@ public class EnemyController : MonoBehaviour
         Shoot,
         Move
     }
-    private AttackStates attStates;
+    private AttackStates actStates;
     private AttackStates nextStates;
 	Vector3 pos;
 
     // Use this for initialization
     void Start ()
     {
+<<<<<<< HEAD
         
 
+=======
+>>>>>>> origin/master
 		_agent = GetComponent<NavMeshAgent>();
         _player = GameObject.Find("Player");
         controlPoint = transform.position;
 
         states = EnemyStates.Roam;
-        attStates = AttackStates.Wait;
+        actStates = AttackStates.Wait;
 
         shooting = false;
         moving = false;
@@ -103,10 +113,12 @@ public class EnemyController : MonoBehaviour
                 Attack();
                 break;
         }
+<<<<<<< HEAD
 		
+=======
+>>>>>>> origin/master
 		pos = transform.position;
 		pos.y = 0f;
-
 		transform.position = pos;
 	
 	}
@@ -147,6 +159,7 @@ public class EnemyController : MonoBehaviour
                     if (hit.collider.gameObject == _player)
                     {
                         states = EnemyStates.Attack;
+                        actStates = AttackStates.Wait;
                         nextStates = AttackStates.GetCloser;
                     }
                 }
@@ -159,7 +172,7 @@ public class EnemyController : MonoBehaviour
     // Fonction qui gere l'attaque de l'ennemi
     void Attack()
     {
-        switch(attStates)
+        switch(actStates)
         {
             case AttackStates.Wait:     /* L'ennemi est en etat d'attente */
                 //Debug.Log("wait");
@@ -169,7 +182,7 @@ public class EnemyController : MonoBehaviour
                 if (timer > timeToAction)
                 {
                     timer = 0;
-                    attStates = nextStates;
+                    actStates = nextStates;
                 }
                 break;
 
@@ -188,7 +201,7 @@ public class EnemyController : MonoBehaviour
                     if (target.name == "Player")
                     {
                         nextStates = AttackStates.Shoot;
-                        attStates = AttackStates.Wait;
+                        actStates = AttackStates.Wait;
                     }
                 }
                 break;
@@ -203,7 +216,7 @@ public class EnemyController : MonoBehaviour
                 if (!shooting)
                 {
                     nextStates = AttackStates.Move;
-                    attStates = AttackStates.Wait;
+                    actStates = AttackStates.Wait;
                 }
                 
                 break;
@@ -236,7 +249,7 @@ public class EnemyController : MonoBehaviour
                 if (Vector3.Distance(transform.position, _agent.destination) < 1.2f && moving)
                 {
                     moving = false;
-                    attStates = AttackStates.GetCloser;
+                    actStates = AttackStates.GetCloser;
                 }
                 break;
 				
@@ -249,7 +262,7 @@ public class EnemyController : MonoBehaviour
             if (timerFollow > timeFollowingPlayer)
             {
                 states = EnemyStates.Roam;
-                attStates = AttackStates.Wait;
+                actStates = AttackStates.Wait;
             }
         }
         else
@@ -257,46 +270,7 @@ public class EnemyController : MonoBehaviour
             timerFollow = 0;
         }
 
-		Collider[] colls = Physics.OverlapSphere(transform.position, dodgeDist);
-		foreach (Collider coll in colls)
-		{
-			if (coll.gameObject.tag == "PlayerBullet")
-			{
-				//Debug.Log("Bullet in area");
-				if (Vector3.Angle(coll.GetComponent<Rigidbody>().velocity.normalized, (transform.position - coll.transform.position).normalized) <= dodgeAngle)
-				{
-					//Debug.Log("in angle");
-
-					Vector3 dir = coll.transform.position - transform.position;
-					float tmp = dir.z;
-					dir.z = -dir.x;
-					dir.x = tmp;
-
-					float halfchoice = Random.Range(0.0f, 1.0f);
-					if (halfchoice < 0.5f)
-					{
-						dir = -dir;
-					}
-
-
-					RaycastHit hit;
-					if(Physics.Raycast(transform.position, dir, out hit, dodgeForce))
-					{
-						Debug.Log("plop");
-						dir = -dir;
-					}
-
-					float changeDodge = Random.Range(0.0f, 1.0f);
-					if (changeDodge < dodgeRate && timerDodge > dodgeCD)
-					{
-						//Debug.Log("Avoid");
-						transform.GetComponent<Rigidbody>().velocity = dir * dodgeForce;
-						timerDodge = 0;
-					}
-				}
-			}
-		}
-		timerDodge += Time.deltaTime;
+        Dodge();
 	}
 
 
@@ -313,6 +287,52 @@ public class EnemyController : MonoBehaviour
             }
         }
         return false;
+    }
+
+
+    void Dodge ()
+    {
+        Collider[] colls = Physics.OverlapSphere(transform.position, dodgeDist);
+        foreach (Collider coll in colls)
+        {
+            if (coll.gameObject.tag == "PlayerBullet")
+            {
+                //Debug.Log("Bullet in area");
+                if (Vector3.Angle(coll.GetComponent<Rigidbody>().velocity.normalized, (transform.position - coll.transform.position).normalized) <= dodgeAngle)
+                {
+                    //Debug.Log("in angle");
+
+                    Vector3 dir = coll.transform.position - transform.position;
+                    float tmp = dir.z;
+                    dir.z = -dir.x;
+                    dir.x = tmp;
+
+                    float halfchoice = Random.Range(0.0f, 1.0f);
+                    if (halfchoice < 0.5f)
+                    {
+                        dir = -dir;
+                    }
+
+
+                    RaycastHit hit;
+                    if (Physics.Raycast(transform.position, dir, out hit, dodgeForce / 2))
+                    {
+                        Debug.Log("plop");
+                        dir = -dir;
+                    }
+
+                    float changeDodge = Random.Range(0.0f, 1.0f);
+                    if (changeDodge < dodgeRate && timerDodge > dodgeCD)
+                    {
+                        //Debug.Log("Avoid");
+                        transform.GetComponent<Rigidbody>().velocity = dir * dodgeForce;
+                        timerDodge = 0;
+                        timerFollow = 0;
+                    }
+                }
+            }
+        }
+        timerDodge += Time.deltaTime;
     }
 
 
@@ -350,11 +370,14 @@ public class EnemyController : MonoBehaviour
         {
             shooting = false;
             nextStates = AttackStates.Move;
-            attStates = AttackStates.Wait;
+            actStates = AttackStates.Wait;
         }
     }
 
+<<<<<<< HEAD
     
+=======
+>>>>>>> origin/master
 
 	void OnDrawGizmos ()
 	{
