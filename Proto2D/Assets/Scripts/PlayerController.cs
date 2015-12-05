@@ -70,7 +70,7 @@ public class PlayerController : MonoBehaviour
 	Vector3 shotDir;
 	Vector3 toEnemy;
 	Ray ray;
-	int indexWeapons = 0;
+	public int indexWeapons = 0;
 	int nbWeapons;
 
 	// Use this for initialization

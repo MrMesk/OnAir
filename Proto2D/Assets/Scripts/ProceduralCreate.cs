@@ -5,8 +5,8 @@ using UnityEngine.UI;
 
 public class ProceduralCreate : MonoBehaviour 
 {
-   // public InputField radiusField;
-   // public InputField probaField;
+    public InputField radiusField;
+    public InputField probaField;
     public int nbSalles; // Nombre de salles valides à générer
 	public float proba; // Probabilité de générer une salle
 
@@ -278,24 +278,22 @@ public class ProceduralCreate : MonoBehaviour
     // Update is called once per frame
     void Update()
     {
-		/*
         if (Input.GetButtonDown("Jump"))
         {
-           mainCamera.orthographicSize = 100f / ((50f / (float)nbSalles));
-		   DungeonSpawn();
-           textValue = int.Parse(radiusField.text);
-           nbSalles = textValue;
+            //mainCamera.orthographicSize = 100f / ((50f / (float)nbSalles));
 
-           proba = float.Parse(probaField.text) / 100;
+            textValue = int.Parse(radiusField.text);
+            nbSalles = textValue;
 
-            
+            proba = float.Parse(probaField.text) / 100;
+
+            DungeonSpawn();
         }
-		*/
-	}
-	void Start()
+
+    }
+    void Start()
     {
-		DungeonSpawn();
-		// radiusField.text = nbSalles.ToString();
-		// probaField.text = (proba*100).ToString();
-	}
+        radiusField.text = nbSalles.ToString();
+        probaField.text = (proba*100).ToString();
+    }
 }

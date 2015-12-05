@@ -307,7 +307,7 @@ public class Enemy_Tiger_Controller : MonoBehaviour {
                     RaycastHit hit;
                     if (Physics.Raycast(transform.position, dir, out hit, dodgeForce / 2))
                     {
-                        Debug.Log("plop");
+                        //Debug.Log("plop");
                         dir = -dir;
                     }
 
