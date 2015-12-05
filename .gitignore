@@ -7,25 +7,25 @@ Library/
 # ===================================== #
 # Visual Studio / MonoDevelop generated #
 # ===================================== #
-ExportedObj/
-obj/
-*.svd
-*.userprefs
-/*.csproj
-*.pidb
-*.suo
-/*.sln
-*.user
-*.unityproj
-*.booproj
+Proto2D/ExportedObj/
+Proto2D/obj/
+Proto2D/*.svd
+Proto2D/*.userprefs
+Proto2D//*.csproj
+Proto2D/*.pidb
+Proto2D/*.suo
+Proto2D/**/*.sln
+Proto2D/*.user
+Proto2D/*.unityproj
+Proto2D/*.booproj
  
 # ============ #
 # OS generated #
 # ============ #
-.DS_Store
-.DS_Store?
-._*
-.Spotlight-V100
-.Trashes
-ehthumbs.db
-Thumbs.db
+Proto2D/.DS_Store
+Proto2D/.DS_Store?
+Proto2D/._*
+Proto2D/.Spotlight-V100
+Proto2D/.Trashes
+Proto2D/ehthumbs.db
+Proto2D/Thumbs.db
