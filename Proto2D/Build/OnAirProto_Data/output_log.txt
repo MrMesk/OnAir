@@ -1,28 +1,50 @@
-Mono path[0] = 'F:/ProjectUnity/OnAir/Proto2D/Build/OnAirProto_Data/Managed'
-Mono path[1] = 'F:/ProjectUnity/OnAir/Proto2D/Build/OnAirProto_Data/Mono'
-Mono config path = 'F:/ProjectUnity/OnAir/Proto2D/Build/OnAirProto_Data/Mono/etc'
-PlayerConnection initialized from F:/ProjectUnity/OnAir/Proto2D/Build/OnAirProto_Data (debug = 0)
-PlayerConnection initialized network socket : 0.0.0.0 55261
-Broadcasting "[IP] 169.254.152.170 [Port] 55261 [Flags] 2 [Guid] 2895802741 [EditorId] 2997121379 [Version] 1048832 [Id] WindowsPlayer(BeardMage) [Debug] 0" to [169.254.255.255:54997]...
-PlayerConnection already initialized - listening to [169.254.152.170:55261]
-Initialize engine version: 5.2.0f3 (e7947df39b5c)
+Mono path[0] = 'F:/OnAir/Projet/OnAir/Proto2D/Build/OnAirProto_Data/Managed'
+Mono path[1] = 'F:/OnAir/Projet/OnAir/Proto2D/Build/OnAirProto_Data/Mono'
+Mono config path = 'F:/OnAir/Projet/OnAir/Proto2D/Build/OnAirProto_Data/Mono/etc'
+PlayerConnection initialized from F:/OnAir/Projet/OnAir/Proto2D/Build/OnAirProto_Data (debug = 0)
+PlayerConnection initialized network socket : 0.0.0.0 55177
+Multi-casting "[IP] 10.66.125.113 [Port] 55177 [Flags] 2 [Guid] 3632561522 [EditorId] 1661956703 [Version] 1048832 [Id] WindowsPlayer(BeardMage) [Debug] 0" to [225.0.0.222:54997]...
+PlayerConnection already initialized - listening to [10.66.125.113:55177]
+Initialize engine version: 5.2.3f1 (f3d16a1fa2dd)
 GfxDevice: creating device client; threaded=1
 Direct3D:
     Version:  Direct3D 11.0 [level 11.0]
     Renderer: AMD Radeon HD 8650G (ID=0x990b)
     Vendor:   ATI
-    VRAM:     2665 MB
+    VRAM:     2777 MB
 Begin MonoManager ReloadAssembly
-Platform assembly: F:\ProjectUnity\OnAir\Proto2D\Build\OnAirProto_Data\Managed\UnityEngine.dll (this message is harmless)
-Loading F:\ProjectUnity\OnAir\Proto2D\Build\OnAirProto_Data\Managed\UnityEngine.dll into Unity Child Domain
-Platform assembly: F:\ProjectUnity\OnAir\Proto2D\Build\OnAirProto_Data\Managed\Assembly-CSharp.dll (this message is harmless)
-Loading F:\ProjectUnity\OnAir\Proto2D\Build\OnAirProto_Data\Managed\Assembly-CSharp.dll into Unity Child Domain
-Platform assembly: F:\ProjectUnity\OnAir\Proto2D\Build\OnAirProto_Data\Managed\UnityEngine.UI.dll (this message is harmless)
-Loading F:\ProjectUnity\OnAir\Proto2D\Build\OnAirProto_Data\Managed\UnityEngine.UI.dll into Unity Child Domain
-Platform assembly: F:\ProjectUnity\OnAir\Proto2D\Build\OnAirProto_Data\Managed\UnityEngine.Networking.dll (this message is harmless)
-Loading F:\ProjectUnity\OnAir\Proto2D\Build\OnAirProto_Data\Managed\UnityEngine.Networking.dll into Unity Child Domain
-Platform assembly: F:\ProjectUnity\OnAir\Proto2D\Build\OnAirProto_Data\Managed\System.Core.dll (this message is harmless)
-- Completed reload, in  0.147 seconds
+Platform assembly: F:\OnAir\Projet\OnAir\Proto2D\Build\OnAirProto_Data\Managed\UnityEngine.dll (this message is harmless)
+Loading F:\OnAir\Projet\OnAir\Proto2D\Build\OnAirProto_Data\Managed\UnityEngine.dll into Unity Child Domain
+Platform assembly: F:\OnAir\Projet\OnAir\Proto2D\Build\OnAirProto_Data\Managed\Assembly-CSharp.dll (this message is harmless)
+Loading F:\OnAir\Projet\OnAir\Proto2D\Build\OnAirProto_Data\Managed\Assembly-CSharp.dll into Unity Child Domain
+Platform assembly: F:\OnAir\Projet\OnAir\Proto2D\Build\OnAirProto_Data\Managed\UnityEngine.UI.dll (this message is harmless)
+Loading F:\OnAir\Projet\OnAir\Proto2D\Build\OnAirProto_Data\Managed\UnityEngine.UI.dll into Unity Child Domain
+Platform assembly: F:\OnAir\Projet\OnAir\Proto2D\Build\OnAirProto_Data\Managed\UnityEngine.Networking.dll (this message is harmless)
+Loading F:\OnAir\Projet\OnAir\Proto2D\Build\OnAirProto_Data\Managed\UnityEngine.Networking.dll into Unity Child Domain
+Platform assembly: F:\OnAir\Projet\OnAir\Proto2D\Build\OnAirProto_Data\Managed\System.Core.dll (this message is harmless)
+- Completed reload, in  0.106 seconds
 desktop: 1920x1080 60Hz; virtual: 1920x1080 at 0,0
 <RI> Initializing input.
 <RI> Input initialized.
+<RI> Initialized touch support.
+Platform assembly: F:\OnAir\Projet\OnAir\Proto2D\Build\OnAirProto_Data\Managed\System.dll (this message is harmless)
+Setting up 1 worker threads for Enlighten.
+  Thread -> id: 301c -> priority: 1 
+plop
+UnityEngine.Debug:Internal_Log(Int32, String, Object)
+UnityEngine.Debug:Log(Object)
+Enemy_Tiger_Controller:Dodge() (at F:\OnAir\Projet\OnAir\Proto2D\Assets\Scripts\Enemy_Tiger_Controller.cs:310)
+Enemy_Tiger_Controller:Attack() (at F:\OnAir\Projet\OnAir\Proto2D\Assets\Scripts\Enemy_Tiger_Controller.cs:263)
+Enemy_Tiger_Controller:Update() (at F:\OnAir\Projet\OnAir\Proto2D\Assets\Scripts\Enemy_Tiger_Controller.cs:107)
+ 
+(Filename: F:/OnAir/Projet/OnAir/Proto2D/Assets/Scripts/Enemy_Tiger_Controller.cs Line: 310)
+
+plop
+UnityEngine.Debug:Internal_Log(Int32, String, Object)
+UnityEngine.Debug:Log(Object)
+Enemy_Tiger_Controller:Dodge() (at F:\OnAir\Projet\OnAir\Proto2D\Assets\Scripts\Enemy_Tiger_Controller.cs:310)
+Enemy_Tiger_Controller:Attack() (at F:\OnAir\Projet\OnAir\Proto2D\Assets\Scripts\Enemy_Tiger_Controller.cs:263)
+Enemy_Tiger_Controller:Update() (at F:\OnAir\Projet\OnAir\Proto2D\Assets\Scripts\Enemy_Tiger_Controller.cs:107)
+ 
+(Filename: F:/OnAir/Projet/OnAir/Proto2D/Assets/Scripts/Enemy_Tiger_Controller.cs Line: 310)
+

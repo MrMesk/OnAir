@@ -17,6 +17,7 @@ public class PlayerController : MonoBehaviour
 	public AudioClip gunSound;
 	public AudioClip swordWhoosh;
 	public AudioClip shotGunSound;
+	public AudioClip switchWeapon;
 	AudioSource audioPlayer;
 
 	[Header("Shotgun")]
@@ -69,10 +70,31 @@ public class PlayerController : MonoBehaviour
 	Vector3 shotDir;
 	Vector3 toEnemy;
 	Ray ray;
+	int indexWeapons = 0;
+	int nbWeapons;
 
 	// Use this for initialization
 	void Start () 
 	{
+		nbWeapons = weaponTypes.GetNames(typeof(weaponTypes)).Length;
+		switch(weapon)
+		{
+			case weaponTypes.Sword:
+				indexWeapons = 0;
+				break;
+			case weaponTypes.Gun:
+				indexWeapons = 1;
+				break;
+			case weaponTypes.ShotGun:
+				indexWeapons = 2;
+				break;
+			case weaponTypes.PsyBall:
+				indexWeapons = 3;
+				break;
+			case weaponTypes.Boomerang:
+				indexWeapons = 4;
+				break;
+		}
 		audioPlayer = GetComponent<AudioSource>();
 		canDodge = true;
 		moveDir = transform.position;
@@ -86,9 +108,45 @@ public class PlayerController : MonoBehaviour
 		DodgeManage();
 		MoveManage();
 		WeaponManage();
+		WeaponSwitch();
     }
 
-	void DodgeManage()
+	void WeaponSwitch()
+	{
+		if(Input.GetAxis("Mouse ScrollWheel") > 0)
+		{
+			if (indexWeapons == nbWeapons - 1) indexWeapons = 0;
+			else indexWeapons++;
+			audioPlayer.PlayOneShot(switchWeapon);
+		}
+		else if(Input.GetAxis("Mouse ScrollWheel") < 0)
+        {
+			if (indexWeapons == 0) indexWeapons = nbWeapons -1;
+			else indexWeapons--;
+			audioPlayer.PlayOneShot(switchWeapon);
+		}
+
+		switch (indexWeapons)
+		{
+			case 0:
+				weapon = weaponTypes.Sword;
+				break;
+			case 1:
+				weapon = weaponTypes.Gun;
+				break;
+			case 2:
+				weapon = weaponTypes.ShotGun;
+				break;
+			case 3:
+				weapon = weaponTypes.PsyBall;
+				break;
+			case 4:
+				weapon = weaponTypes.Boomerang;
+				break;
+		}
+	}
+
+    void DodgeManage()
 	{
 		if (isDodging == false)
 		{

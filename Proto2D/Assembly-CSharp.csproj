@@ -45,13 +45,14 @@
 	</Reference>
   </ItemGroup>
   <ItemGroup>
-     <Compile Include="Assets\GoToChild.cs" />
      <Compile Include="Assets\Scripts\Boomerang.cs" />
      <Compile Include="Assets\Scripts\BulletRIP.cs" />
      <Compile Include="Assets\Scripts\CameraZoom.cs" />
      <Compile Include="Assets\Scripts\ChangeValue.cs" />
      <Compile Include="Assets\Scripts\EnemyBullet.cs" />
      <Compile Include="Assets\Scripts\EnemyController.cs" />
+     <Compile Include="Assets\Scripts\Enemy_Tiger_Controller.cs" />
+     <Compile Include="Assets\Scripts\GoToChild.cs" />
      <Compile Include="Assets\Scripts\LifeManager.cs" />
      <Compile Include="Assets\Scripts\ObjectPooler.cs" />
      <Compile Include="Assets\Scripts\ParticleRIP.cs" />
@@ -60,7 +61,8 @@
      <Compile Include="Assets\Scripts\PsychicSphere.cs" />
      <Compile Include="Assets\Scripts\PyroBallEnemy.cs" />
      <Compile Include="Assets\Scripts\PyroShaman.cs" />
-     <Compile Include="Assets\StickToRot.cs" />
+     <Compile Include="Assets\Scripts\Rotate.cs" />
+     <Compile Include="Assets\Scripts\StickToRot.cs" />
  <Reference Include="UnityEngine.UI">
  <HintPath>C:/Program Files/Unity/Editor/Data/UnityExtensions/Unity/GUISystem/UnityEngine.UI.dll</HintPath>
  </Reference>
