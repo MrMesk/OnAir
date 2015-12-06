@@ -1,19 +1,20 @@
 ﻿using UnityEngine;
+using UnityEditor;
 using System.Collections;
 using System.IO;
 using UnityEngine.UI;
 
 public class ProceduralCreate : MonoBehaviour 
 {
-    public InputField radiusField;
-    public InputField probaField;
-    public int nbSalles; // Nombre de salles valides à générer
-	public float proba; // Probabilité de générer une salle
+	NavMeshBuilder navmesh;
+   // public InputField radiusField;
+   // public InputField probaField;
+    public int nbSalles = 20; // Nombre de salles valides à générer
+	public float proba = 20f; // Probabilité de générer une salle
 
-    public Camera mainCamera;
+    //public Camera mainCamera;
 
-
-    int textValue;
+    //int textValue;
 
     // Dimensions d'une salle
     public float roomW;
@@ -278,6 +279,7 @@ public class ProceduralCreate : MonoBehaviour
     // Update is called once per frame
     void Update()
     {
+		/*
         if (Input.GetButtonDown("Jump"))
         {
             //mainCamera.orthographicSize = 100f / ((50f / (float)nbSalles));
@@ -289,11 +291,19 @@ public class ProceduralCreate : MonoBehaviour
 
             DungeonSpawn();
         }
-
+		*/
     }
     void Start()
     {
+		/*
         radiusField.text = nbSalles.ToString();
         probaField.text = (proba*100).ToString();
+		*/
+		DungeonSpawn();
+		NavMeshBuilder.BuildNavMeshAsync();
+		
+		
     }
+
+
 }

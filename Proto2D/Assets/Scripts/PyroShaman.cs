@@ -3,7 +3,7 @@ using System.Collections;
 
 public class PyroShaman : MonoBehaviour
 {
-
+	public LayerMask visionMask;
 	public GameObject pyroBall;
 	public float aggroRange;
 
@@ -47,7 +47,7 @@ public class PyroShaman : MonoBehaviour
 		if(Vector3.Distance(_player.transform.position, transform.position) < aggroRange)
 		{
 			RaycastHit hit;
-			if(Physics.Raycast(transform.position, (_player.transform.position - transform.position), out hit))
+			if(Physics.Raycast(transform.position, (_player.transform.position - transform.position), out hit, float.PositiveInfinity, visionMask))
 			{
 				if(hit.collider.tag == "Player")
 				{

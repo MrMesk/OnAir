@@ -28,13 +28,17 @@ public class BulletRIP : MonoBehaviour
 
 	void OnCollisionEnter (Collision other)
 	{
-		if ( other.gameObject.tag == "Enemy" )
+		if (other.gameObject.tag == "Enemy")
 		{
-            other.gameObject.GetComponent<LifeManager>().StartCoroutine(other.gameObject.GetComponent<LifeManager>().damage(attackPower));
+			other.gameObject.GetComponent<LifeManager>().StartCoroutine(other.gameObject.GetComponent<LifeManager>().damage(attackPower));
 			GetComponent<Rigidbody>().velocity = Vector3.zero;
 			ObjectPooler.current.PoolObject(gameObject);
-        }
-		
+		}
+		else
+		{
+			GetComponent<Rigidbody>().velocity = Vector3.zero;
+			ObjectPooler.current.PoolObject(gameObject);
+		}
 
 	}
 }
