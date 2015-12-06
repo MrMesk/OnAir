@@ -20,6 +20,9 @@ public class CameraMover : MonoBehaviour
 		if(other.tag =="Player")
 		{
 			mainCamera.GetComponent<CameraLerp>().CameraMove(transform.position);
+			Transform roomParent;
+			roomParent = transform.parent;
+			roomParent.Find("Enemies").gameObject.SetActive(true);
 		}
 	}
 }

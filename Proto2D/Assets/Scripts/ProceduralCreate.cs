@@ -1,12 +1,10 @@
 ﻿using UnityEngine;
-using UnityEditor;
 using System.Collections;
 using System.IO;
 using UnityEngine.UI;
 
 public class ProceduralCreate : MonoBehaviour 
 {
-	NavMeshBuilder navmesh;
    // public InputField radiusField;
    // public InputField probaField;
     public int nbSalles = 20; // Nombre de salles valides à générer
@@ -300,7 +298,6 @@ public class ProceduralCreate : MonoBehaviour
         probaField.text = (proba*100).ToString();
 		*/
 		DungeonSpawn();
-		NavMeshBuilder.BuildNavMeshAsync();
 		
 		
     }
