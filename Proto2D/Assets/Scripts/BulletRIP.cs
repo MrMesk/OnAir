@@ -37,7 +37,6 @@ public class BulletRIP : MonoBehaviour
 		else
 		{
 			GetComponent<Rigidbody>().velocity = Vector3.zero;
-			ObjectPooler.current.PoolObject(gameObject);
 		}
 
 	}
