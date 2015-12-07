@@ -9,7 +9,7 @@ public class ProceduralCreate : MonoBehaviour
    // public InputField probaField;
     public int nbSalles = 20; // Nombre de salles valides à générer
 	public float proba = 20f; // Probabilité de générer une salle
-
+	public int nbDiffRooms = 1;
     //public Camera mainCamera;
 
     //int textValue;
@@ -253,12 +253,12 @@ public class ProceduralCreate : MonoBehaviour
 				roomID = string.Concat ("Rooms/",roomID);
 
                 // On récupère la quantité de fichiers .prefab dans le dossier correspondant
-                DirectoryInfo dir = new DirectoryInfo(string.Concat("Assets/Resources/", roomID));
+               /* DirectoryInfo dir = new DirectoryInfo(string.Concat("Assets/Resources/", roomID));
                 FileInfo[] info = dir.GetFiles("*.prefab");
                 int nbFichiers = info.Length;
-
+				*/
                 // On génère ensuite un entier aléatoire qui correspondra à la salle à générer
-                if (nbFichiers > 1)randomPick = Random.Range(1, nbFichiers+1);
+                if (nbDiffRooms > 1)randomPick = Random.Range(1, nbDiffRooms+1);
 				else randomPick = 1;
 
                 // Ici on génère un string qui correspondra au chemin ou se trouvent les salles
@@ -268,7 +268,8 @@ public class ProceduralCreate : MonoBehaviour
                 // On charge ensuite une salle à partir du chemin et de l'entier spécifiés
 				GameObject g = (GameObject)Instantiate ( Resources.Load (roomID) as GameObject, genPosition, this.transform.rotation );
                 roomName = string.Concat ( dungeonMap [tampon [xy,0], tampon[xy,1]].ToString(), " Salle Valide numéro " , xy.ToString());
-				g.name = roomName;
+				//Debug.Log("Room name : " + roomName + " Room ID : " + roomID);
+                g.name = roomName;
 				g.transform.parent = dungeon.transform;
 			}
 		}
