@@ -3,18 +3,33 @@ using System.Collections;
 
 public class EnemyController : MonoBehaviour
 {
-
-	public float dodgeAngle = 15f;
-
     /* Variable pour les distances */
     [Header("Distances")]
     public float distanceVision;
     public float distanceAttaque;
     public float fourchette;
 
-    // Variable pour l'agent de l'ennemi et le GameObject joueur.
-    private NavMeshAgent _agent;
+    // Variable pour le declacement
+    [Header("Deplacement et vitesse")]
     private GameObject _player;
+    private Vector3 destination;
+    public float shoulderMultiplier = 0.5f;
+    public float rayDistance = 5.0f;
+    public float turnSpeed = 6.0f;
+    public float moveSpeed = 6.0f;
+
+    Vector3 pos;
+
+    private Rigidbody myRigidbody;
+    private Vector3 desiredVelocity;
+
+    /* Variable pour le Roam */
+    [Header("Roam")]
+    public float RoamRadius;
+    public float timeBetweenRoam;
+    private float timerRoam;
+    private Vector3 controlPoint;
+
 
     // Un putain de timer magique parce qu'Unity est tout pourri pour suivre des ordres dans le temps
     private float timer;
@@ -24,13 +39,7 @@ public class EnemyController : MonoBehaviour
     public float timeFollowingPlayer;
     private float timerFollow;
 
-    /* Variable pour le Roam */
-    [Header("Variables de Roam")]
-    private Vector3 controlPoint;
-    public float RoamRadius;
-    private Vector3 dest;
-    public float timeBetweenRoam;
-    private float timerRoam;
+
 
     /* Variable pour l'attaque */
     [Header("Variables d'attaque")]
@@ -44,23 +53,30 @@ public class EnemyController : MonoBehaviour
     public int nbShot;
     private int shotDone;
     private bool shooting;
+
+
     private bool moving;
     public float distMove;
+    private bool isPaused;
 
-	public float dodgeRate;
-	public float dodgeDist;
-	public float dodgeForce;
+    public float dodgeRate;
+    public float dodgeDist;
+    public float dodgeForce;
+    public float dodgeAngle = 15f;
+    private bool isDodging;
+    private Vector3 dir;
+
 
     public float dodgeCD;
-	private float timerDodge;
+    private float timerDodge;
 
     /* State Machine de l'ennemi */
-    public enum EnemyStates
+    public enum GlobalStates
     {
         Roam,
         Attack
     }
-    private EnemyStates states;
+    private GlobalStates states;
 
     /* State Machine de l'ennemi en mode combat */
     public enum AttackStates
@@ -72,65 +88,138 @@ public class EnemyController : MonoBehaviour
     }
     private AttackStates actStates;
     private AttackStates nextStates;
-	Vector3 pos;
+
+
 
     // Use this for initialization
-    void Start ()
+    void Start()
     {
-		_agent = GetComponent<NavMeshAgent>();
         _player = GameObject.Find("Player");
-        controlPoint = transform.position;
+        myRigidbody = GetComponent<Rigidbody>();
 
-        states = EnemyStates.Roam;
+        controlPoint = transform.position;
+        destination = transform.position;
+
+        states = GlobalStates.Roam;
         actStates = AttackStates.Wait;
 
-        shooting = false;
-        moving = false;
-	}
-	
+        isPaused = false;
+    }
 
-	// Update is called once per frame
-	void Update ()
-	{
-	    switch(states)
+
+
+
+    // Update is called once per frame
+    void Update()
+    {
+        switch (states)
         {
-            case EnemyStates.Roam:
+            case GlobalStates.Roam:
                 //Debug.Log("L'IA est en mode roaming.");
                 Roam();
                 break;
 
 
-            case EnemyStates.Attack:
+            case GlobalStates.Attack:
                 Attack();
                 break;
         }
-		pos = transform.position;
-		pos.y = 0f;
-		transform.position = pos;
-	
-	}
+
+        pos = transform.position;
+        pos.y = 0f;
+        transform.position = pos;
+
+        if (!isPaused && !shooting)
+        {
+            Moving();
+        }
+        else
+        {
+            desiredVelocity = Vector3.zero;
+        }
+    }
+
+
+
+
+    void FixedUpdate()
+    {
+        if (isDodging)
+        {
+            //Debug.Log("is dodging");
+            myRigidbody.velocity = desiredVelocity + (dir * dodgeForce);
+            isDodging = false;
+        }
+        else
+        {
+            myRigidbody.velocity = desiredVelocity;
+        }
+    }
+
+
+
+
+    void Moving()
+    {
+        Vector3 lookDirection = (destination - transform.position).normalized;
+
+        RaycastHit hit;
+
+        Vector3 leftRayPos = transform.position - (transform.right * shoulderMultiplier);
+        Vector3 rightRayPos = transform.position + (transform.right * shoulderMultiplier);
+
+        if (Physics.Raycast(leftRayPos, transform.forward, out hit, rayDistance))
+        {
+            if (hit.collider.tag == "Wall" || hit.collider.tag == "Hole")
+            {
+                Debug.DrawRay(leftRayPos, hit.point, Color.red);
+                lookDirection += hit.normal * 20.0f;
+            }
+
+        }
+        else if (Physics.Raycast(rightRayPos, transform.forward, out hit, rayDistance))
+        {
+            if (hit.collider.tag == "Wall" || hit.collider.tag == "Hole")
+            {
+                Debug.DrawRay(leftRayPos, hit.point, Color.red);
+                lookDirection += hit.normal * 20.0f;
+            }
+        }
+        else
+        {
+            Debug.DrawRay(leftRayPos, transform.forward * rayDistance, Color.yellow);
+            Debug.DrawRay(rightRayPos, transform.forward * rayDistance, Color.yellow);
+        }
+
+        Quaternion lookRot = Quaternion.LookRotation(lookDirection);
+
+        transform.rotation = Quaternion.Slerp(transform.rotation, lookRot, turnSpeed * Time.deltaTime);
+
+        desiredVelocity = transform.forward * moveSpeed;
+        desiredVelocity.y = myRigidbody.velocity.y;
+    }
+
+
 
 
     // Fonction qui gere le roaming de l'ennemi
     void Roam()
     {
-        _agent.stoppingDistance = 0;
 
-        if (timerRoam > timeBetweenRoam)
+        if ((Vector3.Distance(transform.position, destination) < 0.7f))
         {
-            if ((Vector3.Distance(_agent.transform.position, _agent.destination) < 1.5f))
+            isPaused = true;
+            if (timerRoam > timeBetweenRoam)
             {
-                dest = controlPoint + (Random.insideUnitSphere * RoamRadius);
-                NavMeshHit hitRoam;
-                if (NavMesh.SamplePosition(dest, out hitRoam, 1.5f, NavMesh.AllAreas))
-                {
-                    _agent.SetDestination(hitRoam.position);
-                    timerRoam = 0;
-                }
+                Vector3 point = Random.insideUnitSphere;
+                point.y = 0;
+                destination = controlPoint + (point.normalized * RoamRadius);
+                timerRoam = 0;
+                isPaused = false;
             }
+            timerRoam += Time.deltaTime;
         }
 
-        timerRoam += Time.deltaTime;
 
         Collider[] targets = Physics.OverlapSphere(this.transform.position, distanceVision);
 
@@ -145,12 +234,12 @@ public class EnemyController : MonoBehaviour
                 {
                     if (hit.collider.gameObject == _player)
                     {
-                        states = EnemyStates.Attack;
+                        states = GlobalStates.Attack;
                         actStates = AttackStates.Wait;
                         nextStates = AttackStates.GetCloser;
                     }
                 }
-                
+
             }
         }
     }
@@ -159,28 +248,25 @@ public class EnemyController : MonoBehaviour
     // Fonction qui gere l'attaque de l'ennemi
     void Attack()
     {
-        switch(actStates)
+        switch (actStates)
         {
             case AttackStates.Wait:     /* L'ennemi est en etat d'attente */
                 //Debug.Log("wait");
-                _agent.SetDestination(transform.position);
+                destination = transform.position;
+                isPaused = true;
                 //transform.LookAt(_player.transform.position);
                 timer += Time.deltaTime;
                 if (timer > timeToAction)
                 {
                     timer = 0;
+                    isPaused = false;
                     actStates = nextStates;
                 }
                 break;
 
             case AttackStates.GetCloser:    /* L'ennemi se rapproche */
                 //Debug.Log("get closer");
-                NavMeshHit hitAttack;
-                if (NavMesh.SamplePosition(_player.transform.position, out hitAttack, 1.5f, NavMesh.AllAreas))
-                {
-                    _agent.SetDestination(hitAttack.position);
-                    
-                }
+                destination = _player.transform.position;
 
                 Collider[] targets = Physics.OverlapSphere(this.transform.position, distanceAttaque + Random.Range(-fourchette, fourchette));
                 foreach (Collider target in targets)
@@ -195,7 +281,7 @@ public class EnemyController : MonoBehaviour
 
             case AttackStates.Shoot:    /* L'ennemi attaque si il peut */
                 //Debug.Log("shoot");
-                if(VisionOk())
+                if (VisionOk())
                 {
                     Tir(nbShot);
                 }
@@ -205,15 +291,13 @@ public class EnemyController : MonoBehaviour
                     nextStates = AttackStates.Move;
                     actStates = AttackStates.Wait;
                 }
-                
+
                 break;
 
             case AttackStates.Move:
                 //Debug.Log("Move");
-				//Debug.Log(_agent.destination);
-				//Debug.Log(_agent.remainingDistance);
-				//Debug.Log(moving);
-                _agent.stoppingDistance = 0;
+                //Debug.Log(moving);
+
                 if (!moving)
                 {
                     Vector3 dir = _player.transform.position - transform.position;
@@ -227,19 +311,19 @@ public class EnemyController : MonoBehaviour
                         dir = -dir;
                     }
 
-                   
-                    _agent.SetDestination(transform.position + (dir.normalized * distMove));
+
+                    destination = transform.position + (dir.normalized * distMove);
                     moving = true;
 
                 }
 
-                if (Vector3.Distance(transform.position, _agent.destination) < 1.2f && moving)
+                if (Vector3.Distance(transform.position, destination) < 0.7f && moving)
                 {
                     moving = false;
                     actStates = AttackStates.GetCloser;
                 }
                 break;
-				
+
         }
 
 
@@ -248,7 +332,10 @@ public class EnemyController : MonoBehaviour
             timerFollow += Time.deltaTime;
             if (timerFollow > timeFollowingPlayer)
             {
-                states = EnemyStates.Roam;
+                isDodging = false;
+                isPaused = false;
+                shooting = false;
+                states = GlobalStates.Roam;
                 actStates = AttackStates.Wait;
             }
         }
@@ -258,11 +345,11 @@ public class EnemyController : MonoBehaviour
         }
 
         Dodge();
-	}
+    }
 
 
     /* Fonction pour savoir si l'ennemi peut tirer sur le joueur */
-    bool VisionOk ()
+    bool VisionOk()
     {
         dirJoueurEnemy = _player.transform.position - transform.position;
         RaycastHit hit;
@@ -277,7 +364,7 @@ public class EnemyController : MonoBehaviour
     }
 
 
-    void Dodge ()
+    void Dodge()
     {
         Collider[] colls = Physics.OverlapSphere(transform.position, dodgeDist);
         foreach (Collider coll in colls)
@@ -289,7 +376,7 @@ public class EnemyController : MonoBehaviour
                 {
                     //Debug.Log("in angle");
 
-                    Vector3 dir = coll.transform.position - transform.position;
+                    dir = coll.transform.position - transform.position;
                     float tmp = dir.z;
                     dir.z = -dir.x;
                     dir.x = tmp;
@@ -304,15 +391,15 @@ public class EnemyController : MonoBehaviour
                     RaycastHit hit;
                     if (Physics.Raycast(transform.position, dir, out hit, dodgeForce / 2))
                     {
-                        Debug.Log("plop");
+                        //Debug.Log("plop");
                         dir = -dir;
                     }
 
                     float changeDodge = Random.Range(0.0f, 1.0f);
                     if (changeDodge < dodgeRate && timerDodge > dodgeCD)
                     {
-                        //Debug.Log("Avoid");
-                        transform.GetComponent<Rigidbody>().velocity = dir * dodgeForce;
+                        //Debug.Log("dodge ?");
+                        isDodging = true;
                         timerDodge = 0;
                         timerFollow = 0;
                     }
@@ -322,7 +409,7 @@ public class EnemyController : MonoBehaviour
         timerDodge += Time.deltaTime;
     }
 
-
+    
     void Tir (int nbTir)
     {
         if (!shooting)
@@ -360,11 +447,4 @@ public class EnemyController : MonoBehaviour
             actStates = AttackStates.Wait;
         }
     }
-
-	void OnDrawGizmos ()
-	{
-		//Gizmos.color = Color.red;
-		//Gizmos.DrawSphere(_agent.destination, 1.0f);
-
-	}
 }

@@ -49,6 +49,7 @@ public class PlayerController : MonoBehaviour
 	public float dodgeSpeed;
 	public float dodgeCD;
 	public float dodgeDuration;
+	public GameObject weaponSprite;
 
 	[Header("Trail effects")]
 	public GameObject trailLeft;
@@ -126,24 +127,33 @@ public class PlayerController : MonoBehaviour
 			audioPlayer.PlayOneShot(switchWeapon);
 		}
 
-		switch (indexWeapons)
+		if(Input.GetAxis("Mouse ScrollWheel") != 0)
 		{
-			case 0:
-				weapon = weaponTypes.Sword;
-				break;
-			case 1:
-				weapon = weaponTypes.Gun;
-				break;
-			case 2:
-				weapon = weaponTypes.ShotGun;
-				break;
-			case 3:
-				weapon = weaponTypes.PsyBall;
-				break;
-			case 4:
-				weapon = weaponTypes.Boomerang;
-				break;
+			switch (indexWeapons)
+			{
+				case 0:
+					weapon = weaponTypes.Sword;
+					weaponSprite.GetComponent<SpriteRenderer>().sprite = Resources.Load("Weapons/sword", typeof(Sprite)) as Sprite;
+					break;
+				case 1:
+					weapon = weaponTypes.Gun;
+					weaponSprite.GetComponent<SpriteRenderer>().sprite = Resources.Load("Weapons/gun", typeof(Sprite)) as Sprite;
+					break;
+				case 2:
+					weapon = weaponTypes.ShotGun;
+					weaponSprite.GetComponent<SpriteRenderer>().sprite = Resources.Load("Weapons/shotgun", typeof(Sprite)) as Sprite;
+					break;
+				case 3:
+					weapon = weaponTypes.PsyBall;
+					weaponSprite.GetComponent<SpriteRenderer>().sprite = Resources.Load("Weapons/remote", typeof(Sprite)) as Sprite;
+					break;
+				case 4:
+					weapon = weaponTypes.Boomerang;
+					weaponSprite.GetComponent<SpriteRenderer>().sprite = Resources.Load("Weapons/crossMerang", typeof(Sprite)) as Sprite;
+					break;
+			}
 		}
+		
 	}
 
     void DodgeManage()
@@ -199,14 +209,24 @@ public class PlayerController : MonoBehaviour
 	{
 		// A remplacer par quelque chose de plus avancé
 		// Axe Horizontal
-		if (Input.GetAxis("Horizontal") > 0 || Input.GetAxis("Horizontal") < 0)
+		if (Input.GetAxis("Horizontal") > 0)
+		{
+			moveDir.x += Input.GetAxis("Horizontal") * playerSpeed * Time.deltaTime;
+
+		}
+		else if (Input.GetAxis("Horizontal") < 0)
 		{
 			moveDir.x += Input.GetAxis("Horizontal") * playerSpeed * Time.deltaTime;
 		}
 
 		// Axe Vertical
-		if (Input.GetAxis("Vertical") > 0 || Input.GetAxis("Vertical") < 0)
+		if (Input.GetAxis("Vertical") > 0)
 		{
+			moveDir.z += Input.GetAxis("Vertical") * playerSpeed * Time.deltaTime;
+		}
+		else if (Input.GetAxis("Vertical") < 0)
+		{
+
 			moveDir.z += Input.GetAxis("Vertical") * playerSpeed * Time.deltaTime;
 		}
 
@@ -243,6 +263,8 @@ public class PlayerController : MonoBehaviour
 		{
 			Destroy(GameObject.Find("PsyBall(Clone)"));
 		}
+
+
 		RaycastHit hit;
 
 		if (Input.GetMouseButton(0) && canShoot && !isDodging)
@@ -251,7 +273,7 @@ public class PlayerController : MonoBehaviour
 			if (Physics.Raycast(ray, out hit))
 			{
 				Vector3 shotLocation = hit.point;
-				shotDir = shotLocation - transform.position;
+				shotDir = shotLocation - weaponSprite.transform.position;
 				shotDir = shotDir.normalized;
 
 				switch (weapon)
@@ -263,8 +285,8 @@ public class PlayerController : MonoBehaviour
 
 						GameObject clone = ObjectPooler.current.GetObject(shot);
 						clone.SetActive(true);
-						clone.transform.position = transform.position;
-						clone.transform.rotation = transform.rotation;
+						clone.transform.position = weaponSprite.transform.position;
+						clone.transform.rotation = weaponSprite.transform.rotation;
 						clone.GetComponent<Rigidbody>().velocity = (shotDir * shotSpeed);
 
 						audioPlayer.PlayOneShot(gunSound);
@@ -279,12 +301,13 @@ public class PlayerController : MonoBehaviour
 						for (int i = 0; i < potentialTargets.Length; i++)
 						{
 							Vector3 enemyPos = potentialTargets[i].transform.position - transform.position;
-							if (Vector3.Angle(enemyPos.normalized, shotDir.normalized) < 45)
+							if (Vector3.Angle(enemyPos.normalized, shotDir.normalized) < 90)
 							{
 								potentialTargets[i].gameObject.GetComponent<Rigidbody>().AddForce((potentialTargets[i].transform.position - transform.position).normalized * swordForce);
 								potentialTargets[i].gameObject.GetComponent<LifeManager>().StartCoroutine(potentialTargets[i].gameObject.GetComponent<LifeManager>().damage(swordDmg));
 							}
 						}
+						StartCoroutine(animSword());
 						audioPlayer.PlayOneShot(swordWhoosh);
 						canShoot = false;
 						break;
@@ -298,8 +321,8 @@ public class PlayerController : MonoBehaviour
 							Vector3 dirShot = Quaternion.AngleAxis(angle, transform.up) * shotDir;
 							GameObject shotgun = ObjectPooler.current.GetObject(shotgunShell);
 							shotgun.SetActive(true);
-							shotgun.transform.position = transform.position;
-							shotgun.transform.rotation = transform.rotation;
+							shotgun.transform.position = weaponSprite.transform.position;
+							shotgun.transform.rotation = weaponSprite.transform.rotation;
 							shotgun.GetComponent<Rigidbody>().velocity = (dirShot * shotSpeed);
 						}
 						audioPlayer.PlayOneShot(shotGunSound);
@@ -311,8 +334,8 @@ public class PlayerController : MonoBehaviour
 						shotCD = boomerangCD;
 						GameObject boomerang = ObjectPooler.current.GetObject(boomerangBall);
 						boomerang.SetActive(true);
-						boomerang.transform.position = transform.position;
-						boomerang.transform.rotation = transform.rotation;
+						boomerang.transform.position = weaponSprite.transform.position;
+						boomerang.transform.rotation = weaponSprite.transform.rotation;
 
 						boomerang.GetComponent<Boomerang>().GoToClick(hit.point);
 						canShoot = false;
@@ -326,6 +349,13 @@ public class PlayerController : MonoBehaviour
 	{
 		//Gizmos.color = Color.red;
 		//Gizmos.DrawLine(transform.position, transform.position + shotDir);
+	}
+
+	public IEnumerator animSword()
+	{
+		weaponSprite.GetComponent<SpriteRenderer>().sprite = Resources.Load("Weapons/swordSlash", typeof(Sprite)) as Sprite;
+		yield return new WaitForSeconds(0.1f);
+		weaponSprite.GetComponent<SpriteRenderer>().sprite = Resources.Load("Weapons/sword", typeof(Sprite)) as Sprite;
 	}
 
 }

@@ -1,0 +1,14 @@
+fileFormatVersion: 2
+guid: aff35fd6b0f556642ac4fcebf0d6f898
+timeCreated: 1449843117
+licenseType: Free
+MonoImporter:
+  serializedVersion: 2
+  defaultReferences:
+  - blackScreen: {fileID: 2800000, guid: f0a8263d430aaa34e9460475635b6ef1, type: 3}
+  - warp: {fileID: 8300000, guid: d42d4f7dd1b65064c8935383afc7fc95, type: 3}
+  executionOrder: 0
+  icon: {instanceID: 0}
+  userData: 
+  assetBundleName: 
+  assetBundleVariant: 

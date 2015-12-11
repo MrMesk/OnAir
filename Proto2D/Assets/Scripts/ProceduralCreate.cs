@@ -240,67 +240,65 @@ public class ProceduralCreate : MonoBehaviour
 		// On génère les salles valides à partir du tableau tampon
 		for ( int xy = 0; xy < nbSalles+1; xy++)
 		{
-			// Si la case est valide, on génère une salle ( Le contraire ne devrait jamais arriver ici, cela sert surtout à debug )
-			if ( dungeonMap [tampon [xy,0], tampon[xy,1]] > 0 )
+			// Calcul de la position de la salle à partir des coordonnées de celle-ci
+			genPosition = new Vector3(tampon[xy, 1] * roomW - (nbSalles * roomW), 0, tampon[xy, 0] * roomH - (nbSalles * roomH));
+
+			string roomID; // Récupère l'indice de salles adjacentes de la salle à générer
+			int randomPick; // Permet de choisir une salle aléatoire dans une catégorie donnée
+
+			roomID = dungeonMap[tampon[xy, 0], tampon[xy, 1]].ToString();
+			roomID = string.Concat("Rooms/", roomID);
+
+			// Ici on génère un string qui correspondra au chemin ou se trouvent les salles
+			roomID = string.Concat(roomID, "/");
+			GameObject g;
+
+			// Pas d'ennemis dans la première salle
+			if (xy == 0)
 			{
-				// Calcul de la position de la salle à partir des coordonnées de celle-ci
-				genPosition = new Vector3 (tampon[xy,1] * roomW - ( nbSalles * roomW ),0,tampon[xy,0] * roomH - ( nbSalles * roomH ));
-
-                string roomID; // Récupère l'indice de salles adjacentes de la salle à générer
-				int randomPick; // Permet de choisir une salle aléatoire dans une catégorie donnée
-
-				roomID = dungeonMap[tampon [xy,0], tampon[xy,1]].ToString();
-				roomID = string.Concat ("Rooms/",roomID);
-
-                // On récupère la quantité de fichiers .prefab dans le dossier correspondant
-               /* DirectoryInfo dir = new DirectoryInfo(string.Concat("Assets/Resources/", roomID));
-                FileInfo[] info = dir.GetFiles("*.prefab");
-                int nbFichiers = info.Length;
-				*/
-                // On génère ensuite un entier aléatoire qui correspondra à la salle à générer
-                if (nbDiffRooms > 1)randomPick = Random.Range(1, nbDiffRooms+1);
-				else randomPick = 1;
-
-                // Ici on génère un string qui correspondra au chemin ou se trouvent les salles
-                roomID = string.Concat (roomID,"/");
-				roomID = string.Concat (roomID,randomPick.ToString());
-
-                // On charge ensuite une salle à partir du chemin et de l'entier spécifiés
-				GameObject g = (GameObject)Instantiate ( Resources.Load (roomID) as GameObject, genPosition, this.transform.rotation );
-                roomName = string.Concat ( dungeonMap [tampon [xy,0], tampon[xy,1]].ToString(), " Salle Valide numéro " , xy.ToString());
-				//Debug.Log("Room name : " + roomName + " Room ID : " + roomID);
-                g.name = roomName;
-				g.transform.parent = dungeon.transform;
+				roomID = string.Concat(roomID, "starter");
+				g = (GameObject)Instantiate(Resources.Load(roomID) as GameObject, genPosition, this.transform.rotation);
+				roomName = string.Concat(dungeonMap[tampon[xy, 0], tampon[xy, 1]].ToString(), " Starter room ");
 			}
+			// On crée la salle qui téléporte vers le boss en fin de pile
+			else if (xy == nbSalles)
+			{
+				roomID = string.Concat(roomID, "toBoss");
+				g = (GameObject)Instantiate(Resources.Load(roomID) as GameObject, genPosition, this.transform.rotation);
+				roomName = string.Concat(dungeonMap[tampon[xy, 0], tampon[xy, 1]].ToString(), " Boss room ");
+			}
+			else
+			{
+				// On récupère la quantité de fichiers .prefab dans le dossier correspondant
+				/* DirectoryInfo dir = new DirectoryInfo(string.Concat("Assets/Resources/", roomID));
+				FileInfo[] info = dir.GetFiles("*.prefab");
+				int nbFichiers = info.Length;
+				*/
+
+				// On génère ensuite un entier aléatoire qui correspondra à la salle à générer
+				if (nbDiffRooms > 1) randomPick = Random.Range(1, nbDiffRooms + 1);
+				else randomPick = 1;
+				roomID = string.Concat(roomID, randomPick.ToString());
+
+				// On charge ensuite une salle à partir du chemin et de l'entier spécifiés
+				g = (GameObject)Instantiate(Resources.Load(roomID) as GameObject, genPosition, this.transform.rotation);
+				roomName = string.Concat(dungeonMap[tampon[xy, 0], tampon[xy, 1]].ToString(), " Salle Valide numéro ", xy.ToString());
+	
+			}
+			g.name = roomName;
+			g.transform.parent = dungeon.transform;
+
 		}
 	}
 
     // Update is called once per frame
     void Update()
     {
-		/*
-        if (Input.GetButtonDown("Jump"))
-        {
-            //mainCamera.orthographicSize = 100f / ((50f / (float)nbSalles));
-
-            textValue = int.Parse(radiusField.text);
-            nbSalles = textValue;
-
-            proba = float.Parse(probaField.text) / 100;
-
-            DungeonSpawn();
-        }
-		*/
+		
     }
     void Start()
     {
-		/*
-        radiusField.text = nbSalles.ToString();
-        probaField.text = (proba*100).ToString();
-		*/
 		DungeonSpawn();
-		
-		
     }
 
 

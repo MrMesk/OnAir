@@ -6,13 +6,15 @@ public class PsychicSphere : MonoBehaviour
     Ray ray;
     public float speed = 5f;
     public float hitRate = 0.2f;
+	public float maxRange = 40f;
     public int damage = 2;
+	GameObject player;
     float timer;
 
 	// Use this for initialization
 	void Start ()
     {
-	
+		player = GameObject.Find("Player");
 	}
 	
 	// Update is called once per frame
@@ -25,10 +27,12 @@ public class PsychicSphere : MonoBehaviour
         {
             Vector3 destination = Vector3.MoveTowards(transform.position, hit.point, speed * Time.deltaTime);
             destination.y = 0f;
-            transform.position = destination;
-
-            
+            transform.position = destination; 
         }
+		if(Vector3.Distance(transform.position, player.transform.position) > maxRange)
+		{
+			transform.position = player.transform.position;
+		}
     }
 
     void OnTriggerEnter(Collider other)

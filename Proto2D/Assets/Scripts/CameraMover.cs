@@ -14,12 +14,15 @@ public class CameraMover : MonoBehaviour
 
 	GameObject mainCamera;
 	// Use this for initialization
-	void Start()
+	void Awake()
 	{
 		mainCamera = GameObject.Find("Main Camera");
-		transform.Find("Room").gameObject.SetActive(false);
+		
 	}
-
+	void Start()
+	{
+		if (this.tag != "Starter") transform.Find("Room").gameObject.SetActive(false);
+	}
 	// Update is called once per frame
 	void Update()
 	{
@@ -39,8 +42,6 @@ public class CameraMover : MonoBehaviour
 		if (other.tag == "Player")
 		{
 			mainCamera.GetComponent<CameraLerp>().CameraMove(transform.position);
-			//Transform roomParent;
-			//roomParent = transform.parent;
 			transform.Find("Room").gameObject.SetActive(true);
 			toDeactivate = false;
 			timer = 0f;
