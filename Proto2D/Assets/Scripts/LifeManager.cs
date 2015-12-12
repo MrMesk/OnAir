@@ -7,6 +7,7 @@ public class LifeManager : MonoBehaviour
 	public GameObject particleDeath;
 	public int lifePoints;
 	public AudioClip ouch;
+	public AudioClip healSound;
 
 	AudioSource audioPlayer;
 	int remainingLife;
@@ -42,5 +43,13 @@ public class LifeManager : MonoBehaviour
 		
 		remainingLife -= dmg;
 		
+	}
+	public IEnumerator heal(int amount)
+	{
+		audioPlayer.PlayOneShot(healSound);
+		skin.GetComponent<Renderer>().material.color = Color.green;
+		yield return new WaitForSeconds(0.2f);
+		skin.GetComponent<Renderer>().material.color = normalColor;
+		remainingLife += amount;
 	}
 }

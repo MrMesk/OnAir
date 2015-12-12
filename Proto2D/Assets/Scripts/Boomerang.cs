@@ -70,6 +70,7 @@ public class Boomerang : MonoBehaviour
 	{
 		if (other.tag == "Enemy") other.gameObject.GetComponent<LifeManager>().StartCoroutine(other.gameObject.GetComponent<LifeManager>().damage(damage));
 		else if (other.tag == "Wall") isGoing = false;
+		else if (other.tag == "Boss") other.gameObject.GetComponent<BossBattle>().StartCoroutine(other.gameObject.GetComponent<BossBattle>().damageBoss(damage));
 	}
 	void OnTriggerStay(Collider other)
 	{
@@ -82,9 +83,19 @@ public class Boomerang : MonoBehaviour
 				timer = 0f;
 			}
 		}
+		else if (other.tag == "Boss")
+		{
+			timer += Time.deltaTime;
+			if (timer >= hitRate)
+			{
+				other.gameObject.GetComponent<BossBattle>().StartCoroutine(other.gameObject.GetComponent<BossBattle>().damageBoss(damage));
+				timer = 0f;
+			}
+
+		}
 	}
 	void OnTriggerExit(Collider other)
 	{
-		if (other.tag == "Enemy") timer = 0f;
+		if (other.tag == "Enemy" || other.tag == "Boss") timer = 0f;
 	}
 }

@@ -6,18 +6,21 @@ public class Tiger_Controller : MonoBehaviour {
 
     /* Variable pour les distances */
     [Header("Distances")]
-    public float distanceVision;
-    public float distanceAttaque;
-    public float fourchette;
+    public float distanceVision = 40;
+    public float distanceAttaque = 5;
+    public float fourchette = 2;
+    public LayerMask visionMask;
 
     // Variable pour le declacement
     [Header("Deplacement et vitesse")]
     private GameObject _player;
     private Vector3 destination;
     public float shoulderMultiplier = 0.5f;
-    public float rayDistance = 5.0f;
-    public float turnSpeed = 6.0f;
-    public float moveSpeed = 6.0f;
+    public float rayDistance = 2.0f;
+    public float turnSpeed = 20.0f;
+    public float moveSpeed = 10.0f;
+
+    private bool dontLook = false;
 
     Vector3 pos;
 
@@ -26,53 +29,49 @@ public class Tiger_Controller : MonoBehaviour {
 
     /* Variable pour le Roam */
     [Header("Roam")]
-    public float RoamRadius;
-    public float timeBetweenRoam;
+    public float RoamRadius = 4;
+    public float timeBetweenRoam = 0.5f;
     private float timerRoam;
     private Vector3 controlPoint;
-    
 
     // Un putain de timer magique parce qu'Unity est tout pourri pour suivre des ordres dans le temps
     private float timer;
 
-    // Timer pour le temps avant d'arrêter de suivre le joueur
-    [Header("Temps de poursuite")]
-    public float timeFollowingPlayer;
-    private float timerFollow;
-
+    // Timer de debug de deplacement
+    private float timer_tmp;
 
     /* Variable pour l'attaque */
     [Header("Variables d'attaque")]
-    public float timeToAction;
+    public float timeToAction = 1;
 
-    public int attackPower;
+    public int attackPower = 2;
 
-    public float pushingForce;
-    public float chargeSpeed;
-    public float chargeInterval;
+    public float pushingForce = 30;
+    public float chargeSpeed = 20;
+    public float chargeInterval = 0.7f;
     private Vector3 dirJoueurEnemy;
     private Vector3 chargeDir;
-    public int nbCharges;
+    public int nbCharges = 2;
     private int chargeDone;
     private bool isCharging;
-    public float chargeTime;
+    public float chargeTime = 0.4f;
     private float timerCharge;
     private bool goingToCharge;
 
     private bool moving;
-    public float distMove;
+    public float distMove = 4;
     private bool isPaused;
 
-    public float dodgeRate;
-    public float dodgeDist;
-    public float dodgeForce;
-    public float dodgeAngle = 15f;
+    public float dodgeRate = 1;
+    public float dodgeDist = 5;
+    public float dodgeForce = 10;
+    public float dodgeAngle = 15;
     private bool isDodging;
+    public float dodgingTime = 0.1f;
+    private float timerDodging;
     private Vector3 dir;
-
-
-    public float dodgeCD;
-    private float timerDodge;
+    public float dodgeCD = 1;
+    private float timerBetweenDodge;
 
     /* State Machine de l'ennemi */
     public enum GlobalStates
@@ -94,9 +93,16 @@ public class Tiger_Controller : MonoBehaviour {
     private AttackStates nextStates;
 
 
-    
-    
-    
+    // color
+    [Header("Variables de couleur")]
+    Color normalColor;
+    public Color chargeColor = Color.yellow;
+    public GameObject skin;
+
+    //animator
+    [Header("Variables pour l'animation")]
+    public Animator animator;
+
     // Use this for initialization
     void Start () {
         _player = GameObject.Find("Player");
@@ -109,38 +115,47 @@ public class Tiger_Controller : MonoBehaviour {
         actStates = AttackStates.Wait;
 
         isPaused = false;
+
+        normalColor = skin.GetComponent<Renderer>().material.color;
+
+        animator.SetBool("Move", false);
+        animator.SetInteger("Direction", 3);
     }
 	
 
 
 
 	// Update is called once per frame
-	void Update () {
-        switch (states)
-        {
-            case GlobalStates.Roam:
-                //Debug.Log("L'IA est en mode roaming.");
-                Roam();
-                break;
+	void Update ()
+	{
+		if(GameObject.Find("Player") != null)
+		{
+			switch (states)
+			{
+				case GlobalStates.Roam:
+					//Debug.Log("L'IA est en mode roaming.");
+					Roam();
+					break;
 
 
-            case GlobalStates.Attack:
-                Attack();
-                break;
-        }
+				case GlobalStates.Attack:
+					Attack();
+					break;
+			}
 
-        pos = transform.position;
-        pos.y = 0f;
-        transform.position = pos;
 
-        if (!isPaused && !isCharging)
-        {
-            Moving();
-        }
-        else
-        {
-            desiredVelocity = Vector3.zero;
-        }
+			if (!isPaused && !isCharging)
+			{
+				animator.SetBool("Move", true);
+				Moving();
+			}
+			else
+			{
+				desiredVelocity = Vector3.zero;
+				animator.SetBool("Move", false);
+			}
+		}
+        
 	}
 
 
@@ -152,19 +167,44 @@ public class Tiger_Controller : MonoBehaviour {
         {
             //Debug.Log("is dodging");
             myRigidbody.velocity = desiredVelocity + (dir * dodgeForce);
-            isDodging = false;
         }
         else if (goingToCharge)
         {
-            Debug.Log("Charge");
+            //Debug.Log("Charge");
             myRigidbody.velocity = desiredVelocity + (chargeDir * chargeSpeed);
         }
         else
         {
             myRigidbody.velocity = desiredVelocity;
         }
-    }
 
+        if (myRigidbody.velocity.x == myRigidbody.velocity.z)
+        {
+
+        }
+        else if (Mathf.Abs(myRigidbody.velocity.x) > Mathf.Abs( myRigidbody.velocity.z))
+        {
+            if (myRigidbody.velocity.x > 0)
+            {
+                animator.SetInteger("Direction", 2);
+            }
+            else
+            {
+                animator.SetInteger("Direction", 4);
+            }
+        }
+        else
+        {
+            if (myRigidbody.velocity.z > 0)
+            {
+                animator.SetInteger("Direction", 1);
+            }
+            else
+            {
+                animator.SetInteger("Direction", 3);
+            }
+        }
+    }
 
 
 
@@ -177,21 +217,22 @@ public class Tiger_Controller : MonoBehaviour {
         Vector3 leftRayPos = transform.position - (transform.right * shoulderMultiplier);
         Vector3 rightRayPos = transform.position + (transform.right * shoulderMultiplier);
 
+
         if ( Physics.Raycast ( leftRayPos, transform.forward, out hit, rayDistance) )
         {
-            if (hit.collider.tag == "Wall" || hit.collider.tag == "Hole")
+            if (!dontLook && (hit.collider.tag == "Wall" || hit.collider.tag == "Hole"))
             {
                 Debug.DrawRay(leftRayPos, hit.point, Color.red);
-                lookDirection += hit.normal * 20.0f;
+                lookDirection += hit.normal * 50.0f;
             }
 
         }
         else if (Physics.Raycast(rightRayPos, transform.forward, out hit, rayDistance))
         {
-            if (hit.collider.tag == "Wall" || hit.collider.tag == "Hole")
+            if (!dontLook && (hit.collider.tag == "Wall" || hit.collider.tag == "Hole"))
             {
                 Debug.DrawRay(leftRayPos, hit.point, Color.red);
-                lookDirection += hit.normal * 20.0f;
+                lookDirection += hit.normal * 50.0f;
             }
         }
         else
@@ -199,6 +240,7 @@ public class Tiger_Controller : MonoBehaviour {
             Debug.DrawRay(leftRayPos, transform.forward * rayDistance, Color.yellow);
             Debug.DrawRay(rightRayPos, transform.forward * rayDistance, Color.yellow);
         }
+
 
         Quaternion lookRot = Quaternion.LookRotation(lookDirection);
 
@@ -209,22 +251,41 @@ public class Tiger_Controller : MonoBehaviour {
     }
 
 
+    bool IsFree (Vector3 point)
+    {
+        RaycastHit hit;
+        if (Physics.Raycast(point, Vector3.up, out hit, 5))
+        {
+           // Debug.Log(hit.collider.name);
+            //Debug.Log(point + " isn't free");
+            return false;
+        }
+        else
+        {
+            //Debug.Log(point + " is free");
+            return true;
+        }
+    }
 
 
     // Fonction qui gere le roaming de l'ennemi
     void Roam()
     {
         
-        if ((Vector3.Distance(transform.position, destination) < 0.7f))
+        if ((Vector3.Distance(transform.position, destination) < 1.5f))
         {
             isPaused = true;
             if (timerRoam > timeBetweenRoam)
             {
                 Vector3 point = Random.insideUnitSphere;
                 point.y = 0;
-                destination = controlPoint + (point.normalized * RoamRadius);
-                timerRoam = 0;
-                isPaused = false;
+                if (IsFree(controlPoint + (point.normalized * RoamRadius)))
+                {
+                    destination = controlPoint + (point.normalized * RoamRadius);
+                    timerRoam = 0;
+                    isPaused = false;
+                    dontLook = false;
+                } 
             }
             timerRoam += Time.deltaTime;
         }
@@ -239,7 +300,7 @@ public class Tiger_Controller : MonoBehaviour {
                 Vector3 direction = _player.transform.position - transform.position;
 
                 RaycastHit hit;
-                if (Physics.Raycast(transform.position, direction.normalized, out hit, distanceVision))
+                if (Physics.Raycast(transform.position, direction.normalized, out hit, distanceVision, visionMask))
                 {
                     if (hit.collider.gameObject == _player)
                     {
@@ -263,6 +324,11 @@ public class Tiger_Controller : MonoBehaviour {
                 //Debug.Log("wait");
                 destination = transform.position;
                 isPaused = true;
+
+                if (nextStates == AttackStates.Charge)
+                {
+                    StartCoroutine(ReadyToJump());
+                }
                 //transform.LookAt(_player.transform.position);
                 timer += Time.deltaTime;
                 if (timer > timeToAction)
@@ -319,38 +385,22 @@ public class Tiger_Controller : MonoBehaviour {
                         dir = -dir;
                     }
 
-
-                    destination = transform.position + (dir.normalized * distMove);
-                    moving = true;
+                    if (IsFree(transform.position + (dir.normalized * distMove)))
+                    {
+                        destination = transform.position + (dir.normalized * distMove);
+                        moving = true;
+                    }
 
                 }
 
-                if (Vector3.Distance(transform.position, destination) < 0.7f && moving)
+                if (Vector3.Distance(transform.position, destination) < 1.5f && moving)
                 {
                     moving = false;
                     actStates = AttackStates.GetCloser;
+                    dontLook = false;
                 }
                 break;
 
-        }
-
-
-        if (Vector3.Distance(transform.position, _player.transform.position) > distanceVision)
-        {
-            timerFollow += Time.deltaTime;
-            if (timerFollow > timeFollowingPlayer)
-            {
-                goingToCharge = false;
-                isCharging = false;
-                isDodging = false;
-                isPaused = false;
-                states = GlobalStates.Roam;
-                actStates = AttackStates.Wait;
-            }
-        }
-        else
-        {
-            timerFollow = 0;
         }
 
         Dodge();
@@ -362,7 +412,7 @@ public class Tiger_Controller : MonoBehaviour {
     {
         dirJoueurEnemy = _player.transform.position - transform.position;
         RaycastHit hit;
-        if (Physics.Raycast(transform.position, dirJoueurEnemy, out hit))
+        if (Physics.Raycast(transform.position, dirJoueurEnemy, out hit, 50.0f, visionMask))
         {
             if (hit.transform.gameObject.tag == "Player")
             {
@@ -405,17 +455,23 @@ public class Tiger_Controller : MonoBehaviour {
                     }
 
                     float changeDodge = Random.Range(0.0f, 1.0f);
-                    if (changeDodge < dodgeRate && timerDodge > dodgeCD)
+                    if (changeDodge < dodgeRate && timerBetweenDodge > dodgeCD)
                     {
                         //Debug.Log("dodge ?");
                         isDodging = true;
-                        timerDodge = 0;
-                        timerFollow = 0;
+                        timerBetweenDodge = 0;
+                        timerDodging = 0;
                     }
                 }
             }
         }
-        timerDodge += Time.deltaTime;
+        timerBetweenDodge += Time.deltaTime;
+
+        timerDodging += Time.deltaTime;
+        if (timerDodging > dodgingTime)
+        {
+            isDodging = false;
+        }
     }
 
 
@@ -438,12 +494,14 @@ public class Tiger_Controller : MonoBehaviour {
                 timerCharge = 0;
                 chargeDone++;
                 timer = 0;
+                transform.GetComponent<Collider>().isTrigger = true;
             }
             timer += Time.deltaTime;
         }
 
         if (timerCharge > chargeTime)
         {
+            transform.GetComponent<Collider>().isTrigger = false;
             goingToCharge = false;
         }
 
@@ -458,8 +516,13 @@ public class Tiger_Controller : MonoBehaviour {
     }
 
 
-    void OnCollisionEnter(Collision other)
+    void OnTriggerEnter(Collider other)
     {
+        if (other.gameObject.tag == "Wall" && isCharging)
+        {
+            transform.GetComponent<Collider>().isTrigger = false;
+            destination = transform.position;
+        }
         if (other.gameObject.tag == "Player" && isCharging)
         {
             _player.gameObject.GetComponent<LifeManager>().StartCoroutine(_player.gameObject.GetComponent<LifeManager>().damage(attackPower));
@@ -467,4 +530,62 @@ public class Tiger_Controller : MonoBehaviour {
         }
     }
 
+
+    void OnCollisionStay(Collision other)
+    {
+        if (other.gameObject.tag == "Hole" || other.gameObject.tag == "Wall")
+        {
+            timer_tmp += Time.deltaTime;
+            if (timer_tmp > 1.0f)
+            {
+                //Debug.Log("Should give a new point");
+                if (states == GlobalStates.Roam )
+                {
+                    destination = controlPoint;
+                    transform.LookAt(controlPoint);
+                    timerRoam = 0;
+                    isPaused = false;
+                    timer_tmp = 0;
+                    dontLook = true;
+                }
+                else if ( actStates == AttackStates.Move)
+                {
+                    Vector3 dir = _player.transform.position - transform.position;
+                    float tmp = dir.z;
+                    dir.z = -dir.x;
+                    dir.x = tmp;
+
+                    float halfchoice = Random.Range(0.0f, 1.0f);
+                    if (halfchoice < 0.5f)
+                    {
+                        dir = -dir;
+                    }
+
+                    RaycastHit hit;
+                    if (Physics.Raycast(transform.position, dir, out hit, dodgeForce / 2))
+                    {
+                        //Debug.Log("plop");
+                        dir = -dir;
+                    }
+
+                    if (IsFree(transform.position + (dir.normalized * distMove)))
+                    {
+                        destination = transform.position + (dir.normalized * distMove);
+                        transform.LookAt( transform.position + (dir.normalized * distMove));
+                        moving = true;
+                        timer_tmp = 0;
+                        dontLook = true;
+                    }
+                }
+            }
+        }
+    }
+
+
+    IEnumerator ReadyToJump()
+    {
+        skin.GetComponent<Renderer>().material.color = chargeColor;
+        yield return new WaitForSeconds(timeToAction);
+        skin.GetComponent<Renderer>().material.color = normalColor;
+    }
 }

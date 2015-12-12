@@ -5,18 +5,21 @@ public class EnemyController : MonoBehaviour
 {
     /* Variable pour les distances */
     [Header("Distances")]
-    public float distanceVision;
-    public float distanceAttaque;
-    public float fourchette;
+    public float distanceVision = 20;
+    public float distanceAttaque = 10;
+    public float fourchette = 2;
+    public LayerMask visionMask;
 
     // Variable pour le declacement
     [Header("Deplacement et vitesse")]
     private GameObject _player;
     private Vector3 destination;
     public float shoulderMultiplier = 0.5f;
-    public float rayDistance = 5.0f;
-    public float turnSpeed = 6.0f;
+    public float rayDistance = 2.0f;
+    public float turnSpeed = 30.0f;
     public float moveSpeed = 6.0f;
+
+    private bool dontLook = false;
 
     Vector3 pos;
 
@@ -25,49 +28,42 @@ public class EnemyController : MonoBehaviour
 
     /* Variable pour le Roam */
     [Header("Roam")]
-    public float RoamRadius;
-    public float timeBetweenRoam;
+    public float RoamRadius = 3;
+    public float timeBetweenRoam = 1;
     private float timerRoam;
     private Vector3 controlPoint;
 
 
-    // Un putain de timer magique parce qu'Unity est tout pourri pour suivre des ordres dans le temps
+    //Timer
     private float timer;
-
-    // Timer pour le temps avant d'arrêter de suivre le joueur
-    [Header("Temps de poursuite")]
-    public float timeFollowingPlayer;
-    private float timerFollow;
-
-
 
     /* Variable pour l'attaque */
     [Header("Variables d'attaque")]
-    public float timeToAction;
+    public float timeToAction =1;
     public GameObject shot;
-    public float shotSpeed;
-    public float shotInterval;
+    public float shotSpeed = 40;
+    public float shotInterval = 0.2f;
     private Vector3 dirJoueurEnemy;
     private Vector3 shotDir;
     private bool canShoot;
-    public int nbShot;
+    public int nbShot = 3;
     private int shotDone;
     private bool shooting;
 
 
     private bool moving;
-    public float distMove;
+    public float distMove = 4;
     private bool isPaused;
 
-    public float dodgeRate;
-    public float dodgeDist;
-    public float dodgeForce;
-    public float dodgeAngle = 15f;
+    public float dodgeRate = 0.5f;
+    public float dodgeDist = 5;
+    public float dodgeForce = 10;
+    public float dodgeAngle = 15;
     private bool isDodging;
     private Vector3 dir;
 
 
-    public float dodgeCD;
+    public float dodgeCD = 1;
     private float timerDodge;
 
     /* State Machine de l'ennemi */
@@ -89,7 +85,9 @@ public class EnemyController : MonoBehaviour
     private AttackStates actStates;
     private AttackStates nextStates;
 
-
+    //animator
+    [Header("Variables pour l'animation")]
+    public Animator animator;
 
     // Use this for initialization
     void Start()
@@ -104,6 +102,9 @@ public class EnemyController : MonoBehaviour
         actStates = AttackStates.Wait;
 
         isPaused = false;
+
+        animator.SetBool("Move", false);
+        animator.SetInteger("Direction", 3);
     }
 
 
@@ -112,31 +113,42 @@ public class EnemyController : MonoBehaviour
     // Update is called once per frame
     void Update()
     {
-        switch (states)
-        {
-            case GlobalStates.Roam:
-                //Debug.Log("L'IA est en mode roaming.");
-                Roam();
-                break;
+		if (GameObject.Find("Player") != null)
+		{
+			switch (states)
+			{
+				case GlobalStates.Roam:
+					//Debug.Log("L'IA est en mode roaming.");
+					Roam();
+					break;
 
 
-            case GlobalStates.Attack:
-                Attack();
-                break;
-        }
+				case GlobalStates.Attack:
+					Attack();
+					break;
+			}
 
-        pos = transform.position;
-        pos.y = 0f;
-        transform.position = pos;
 
-        if (!isPaused && !shooting)
-        {
-            Moving();
-        }
-        else
-        {
-            desiredVelocity = Vector3.zero;
-        }
+			if (!isPaused && !shooting)
+			{
+				Moving();
+			}
+			else
+			{
+				desiredVelocity = Vector3.zero;
+			}
+
+			if (!isPaused && !shooting)
+			{
+				animator.SetBool("Move", true);
+				Moving();
+			}
+			else
+			{
+				desiredVelocity = Vector3.zero;
+				animator.SetBool("Move", false);
+			}
+		}
     }
 
 
@@ -154,6 +166,37 @@ public class EnemyController : MonoBehaviour
         {
             myRigidbody.velocity = desiredVelocity;
         }
+
+        if (myRigidbody.velocity.x == myRigidbody.velocity.z)
+        {
+
+        }
+        else if (Mathf.Abs(myRigidbody.velocity.x) > Mathf.Abs(myRigidbody.velocity.z))
+        {
+            if (myRigidbody.velocity.x > 0)
+            {
+               // transform.localScale = new Vector3( 0.7f, 1.57f, 0.7f);
+                animator.SetInteger("Direction", 2);
+            }
+            else
+            {
+                //transform.localScale = new Vector3(-0.7f, 1.57f, 0.7f);
+                animator.SetInteger("Direction", 4);
+            }
+        }
+        else
+        {
+            if (myRigidbody.velocity.z > 0)
+            {
+                //transform.localScale = new Vector3(0.7f, 1.57f, 0.7f);
+                animator.SetInteger("Direction", 1);
+            }
+            else
+            {
+                //transform.localScale = new Vector3(0.7f, 1.57f, 0.7f);
+                animator.SetInteger("Direction", 3);
+            }
+        }
     }
 
 
@@ -170,19 +213,19 @@ public class EnemyController : MonoBehaviour
 
         if (Physics.Raycast(leftRayPos, transform.forward, out hit, rayDistance))
         {
-            if (hit.collider.tag == "Wall" || hit.collider.tag == "Hole")
+            if (!dontLook && (hit.collider.tag == "Wall" || hit.collider.tag == "Hole"))
             {
                 Debug.DrawRay(leftRayPos, hit.point, Color.red);
-                lookDirection += hit.normal * 20.0f;
+                lookDirection += hit.normal * 50.0f;
             }
 
         }
         else if (Physics.Raycast(rightRayPos, transform.forward, out hit, rayDistance))
         {
-            if (hit.collider.tag == "Wall" || hit.collider.tag == "Hole")
+            if (!dontLook && (hit.collider.tag == "Wall" || hit.collider.tag == "Hole"))
             {
                 Debug.DrawRay(leftRayPos, hit.point, Color.red);
-                lookDirection += hit.normal * 20.0f;
+                lookDirection += hit.normal * 50.0f;
             }
         }
         else
@@ -200,6 +243,21 @@ public class EnemyController : MonoBehaviour
     }
 
 
+    bool IsFree(Vector3 point)
+    {
+        RaycastHit hit;
+        if (Physics.Raycast(point, Vector3.up, out hit, 5))
+        {
+            //Debug.Log(hit.collider.name);
+            //Debug.Log(point + " isn't free");
+            return false;
+        }
+        else
+        {
+            //Debug.Log(point + " is free");
+            return true;
+        }
+    }
 
 
     // Fonction qui gere le roaming de l'ennemi
@@ -213,9 +271,13 @@ public class EnemyController : MonoBehaviour
             {
                 Vector3 point = Random.insideUnitSphere;
                 point.y = 0;
-                destination = controlPoint + (point.normalized * RoamRadius);
-                timerRoam = 0;
-                isPaused = false;
+                if (IsFree(controlPoint + (point.normalized * RoamRadius)))
+                {
+                    destination = controlPoint + (point.normalized * RoamRadius);
+                    timerRoam = 0;
+                    isPaused = false;
+                    dontLook = false;
+                }
             }
             timerRoam += Time.deltaTime;
         }
@@ -311,9 +373,11 @@ public class EnemyController : MonoBehaviour
                         dir = -dir;
                     }
 
-
-                    destination = transform.position + (dir.normalized * distMove);
-                    moving = true;
+                    if (IsFree(transform.position + (dir.normalized * distMove)))
+                    {
+                        destination = transform.position + (dir.normalized * distMove);
+                        moving = true;
+                    }
 
                 }
 
@@ -321,27 +385,10 @@ public class EnemyController : MonoBehaviour
                 {
                     moving = false;
                     actStates = AttackStates.GetCloser;
+                    dontLook = false;
                 }
                 break;
 
-        }
-
-
-        if (Vector3.Distance(transform.position, _player.transform.position) > distanceVision)
-        {
-            timerFollow += Time.deltaTime;
-            if (timerFollow > timeFollowingPlayer)
-            {
-                isDodging = false;
-                isPaused = false;
-                shooting = false;
-                states = GlobalStates.Roam;
-                actStates = AttackStates.Wait;
-            }
-        }
-        else
-        {
-            timerFollow = 0;
         }
 
         Dodge();
@@ -353,7 +400,7 @@ public class EnemyController : MonoBehaviour
     {
         dirJoueurEnemy = _player.transform.position - transform.position;
         RaycastHit hit;
-        if (Physics.Raycast(transform.position, dirJoueurEnemy, out hit))
+        if (Physics.Raycast(transform.position, dirJoueurEnemy, out hit, 50.0f, visionMask))
         {
             if (hit.transform.gameObject.tag == "Player")
             {
@@ -401,7 +448,6 @@ public class EnemyController : MonoBehaviour
                         //Debug.Log("dodge ?");
                         isDodging = true;
                         timerDodge = 0;
-                        timerFollow = 0;
                     }
                 }
             }

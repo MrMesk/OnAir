@@ -47,7 +47,10 @@ public class ProceduralCreate : MonoBehaviour
 	int loopIndex; // Index utilisé pour la boucle de génération des salles à partir de la case en cours de traitement
 	string roomName; // Nom de la case en sortie
 
-
+	void Awake()
+	{
+		nbSalles = GameObject.Find("GameManager").GetComponent<DungeonManager>().nbRooms;
+	}
 	// Fonction de création du donjon
 	void DungeonSpawn () 
 	{

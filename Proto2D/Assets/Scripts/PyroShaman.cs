@@ -29,16 +29,19 @@ public class PyroShaman : MonoBehaviour
 	// Update is called once per frame
 	void Update ()
 	{
-		switch (state)
+		if (GameObject.Find("Player") != null)
 		{
-			case EnemyStates.Idle:
-				Idle();
-				break;
+			switch (state)
+			{
+				case EnemyStates.Idle:
+					Idle();
+					break;
 
 
-			case EnemyStates.Attack:
-				Attack();
-				break;
+				case EnemyStates.Attack:
+					Attack();
+					break;
+			}
 		}
 	}
 

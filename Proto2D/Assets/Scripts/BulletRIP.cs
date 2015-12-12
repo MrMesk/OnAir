@@ -34,9 +34,16 @@ public class BulletRIP : MonoBehaviour
 			GetComponent<Rigidbody>().velocity = Vector3.zero;
 			ObjectPooler.current.PoolObject(gameObject);
 		}
+		else if (other.gameObject.tag == "Boss")
+		{
+			other.gameObject.GetComponent<BossBattle>().StartCoroutine(other.gameObject.GetComponent<BossBattle>().damageBoss(attackPower));
+			GetComponent<Rigidbody>().velocity = Vector3.zero;
+			ObjectPooler.current.PoolObject(gameObject);
+		}
 		else
 		{
 			GetComponent<Rigidbody>().velocity = Vector3.zero;
+			ObjectPooler.current.PoolObject(gameObject);
 		}
 
 	}

@@ -23,10 +23,13 @@ public class PyroBallEnemy : MonoBehaviour
 	// Update is called once per frame
 	void Update ()
 	{
-		actualSpeed += Time.deltaTime * accel;
-		actualSpeed = Mathf.Clamp(actualSpeed, speed, maxSpeed);
+		if (GameObject.Find("Player") != null)
+		{
+			actualSpeed += Time.deltaTime * accel;
+			actualSpeed = Mathf.Clamp(actualSpeed, speed, maxSpeed);
 
-		transform.position = Vector3.MoveTowards(transform.position, player.transform.position, actualSpeed * Time.deltaTime);
+			transform.position = Vector3.MoveTowards(transform.position, player.transform.position, actualSpeed * Time.deltaTime);
+		}
 	}
 
 	void OnTriggerEnter(Collider other)

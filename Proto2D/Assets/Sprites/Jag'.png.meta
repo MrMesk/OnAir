@@ -1,0 +1,232 @@
+fileFormatVersion: 2
+guid: 29b7e1ed9192b5c408f28b538c6e00d1
+timeCreated: 1449858012
+licenseType: Free
+TextureImporter:
+  fileIDToRecycleName:
+    21300000: Jag'_0
+    21300002: Jag'_1
+    21300004: Jag'_2
+    21300006: Jag'_3
+    21300008: Jag'_4
+    21300010: Jag'_5
+    21300012: Jag'_6
+    21300014: Jag'_7
+    21300016: Jag'_8
+    21300018: Jag'_9
+    21300020: Jag'_10
+    21300022: Jag'_11
+    21300024: Jag'_12
+    21300026: Jag'_13
+    21300028: Jag'_14
+    21300030: Jag'_15
+  serializedVersion: 2
+  mipmaps:
+    mipMapMode: 0
+    enableMipMap: 1
+    linearTexture: 0
+    correctGamma: 0
+    fadeOut: 0
+    borderMipMap: 0
+    mipMapFadeDistanceStart: 1
+    mipMapFadeDistanceEnd: 3
+  bumpmap:
+    convertToNormalMap: 0
+    externalNormalMap: 0
+    heightScale: .25
+    normalMapFilter: 0
+  isReadable: 0
+  grayScaleToAlpha: 0
+  generateCubemap: 0
+  cubemapConvolution: 0
+  cubemapConvolutionSteps: 8
+  cubemapConvolutionExponent: 1.5
+  seamlessCubemap: 0
+  textureFormat: -3
+  maxTextureSize: 8192
+  textureSettings:
+    filterMode: 2
+    aniso: 16
+    mipBias: -1
+    wrapMode: 1
+  nPOTScale: 0
+  lightmap: 0
+  rGBM: 0
+  compressionQuality: 50
+  allowsAlphaSplitting: 0
+  spriteMode: 2
+  spriteExtrude: 1
+  spriteMeshType: 1
+  alignment: 0
+  spritePivot: {x: .5, y: .5}
+  spriteBorder: {x: 0, y: 0, z: 0, w: 0}
+  spritePixelsToUnits: 200
+  alphaIsTransparency: 1
+  textureType: 8
+  buildTargetSettings: []
+  spriteSheet:
+    sprites:
+    - name: Jag'_0
+      rect:
+        serializedVersion: 2
+        x: 0
+        y: 845
+        width: 151
+        height: 227
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+    - name: Jag'_1
+      rect:
+        serializedVersion: 2
+        x: 199
+        y: 844
+        width: 151
+        height: 224
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+    - name: Jag'_2
+      rect:
+        serializedVersion: 2
+        x: 416
+        y: 845
+        width: 150
+        height: 227
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+    - name: Jag'_3
+      rect:
+        serializedVersion: 2
+        x: 623
+        y: 847
+        width: 150
+        height: 222
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+    - name: Jag'_4
+      rect:
+        serializedVersion: 2
+        x: 3
+        y: 548
+        width: 150
+        height: 225
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+    - name: Jag'_5
+      rect:
+        serializedVersion: 2
+        x: 203
+        y: 548
+        width: 150
+        height: 221
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+    - name: Jag'_6
+      rect:
+        serializedVersion: 2
+        x: 418
+        y: 549
+        width: 150
+        height: 222
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+    - name: Jag'_7
+      rect:
+        serializedVersion: 2
+        x: 624
+        y: 551
+        width: 150
+        height: 218
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+    - name: Jag'_8
+      rect:
+        serializedVersion: 2
+        x: 12
+        y: 264
+        width: 98
+        height: 235
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+    - name: Jag'_9
+      rect:
+        serializedVersion: 2
+        x: 212
+        y: 274
+        width: 99
+        height: 223
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+    - name: Jag'_10
+      rect:
+        serializedVersion: 2
+        x: 428
+        y: 266
+        width: 104
+        height: 233
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+    - name: Jag'_11
+      rect:
+        serializedVersion: 2
+        x: 636
+        y: 261
+        width: 99
+        height: 236
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+    - name: Jag'_12
+      rect:
+        serializedVersion: 2
+        x: 14
+        y: 3
+        width: 98
+        height: 235
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+    - name: Jag'_13
+      rect:
+        serializedVersion: 2
+        x: 214
+        y: 13
+        width: 98
+        height: 223
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+    - name: Jag'_14
+      rect:
+        serializedVersion: 2
+        x: 430
+        y: 5
+        width: 104
+        height: 223
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+    - name: Jag'_15
+      rect:
+        serializedVersion: 2
+        x: 638
+        y: 0
+        width: 99
+        height: 229
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+  spritePackingTag: 
+  userData: 
+  assetBundleName: 
+  assetBundleVariant: 

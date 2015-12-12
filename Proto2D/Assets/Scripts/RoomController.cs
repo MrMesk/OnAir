@@ -1,17 +1,19 @@
 ﻿using UnityEngine;
 using System.Collections;
 using System.Collections.Generic;
-
+[RequireComponent (typeof (AudioSource))]
 public class RoomController : MonoBehaviour
 {
 	GameObject closeDoors;
 	GameObject openDoors;
 	GameObject enemies;
+	AudioSource audioPlayer;
 	int nbEnemies;
 	bool isClosed = false;
 	// Use this for initialization
 	void Start ()
 	{
+		audioPlayer = GetComponent<AudioSource>();
 		closeDoors = transform.Find("Closed").gameObject;
 		openDoors = transform.Find("Open").gameObject;
 		enemies = transform.Find("Enemies").gameObject;
@@ -43,6 +45,7 @@ public class RoomController : MonoBehaviour
 		if(other.tag =="Player" && nbEnemies > 0)
 		{
 			isClosed = true;
+			audioPlayer.PlayOneShot(Resources.Load("Sounds/lock", typeof(AudioClip)) as AudioClip);
 		}
 	}
 

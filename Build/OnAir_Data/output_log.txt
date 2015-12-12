@@ -1,10 +1,3 @@
-Mono path[0] = 'F:/OnAir/Projet/OnAir/Build/OnAir_Data/Managed'
-Mono path[1] = 'F:/OnAir/Projet/OnAir/Build/OnAir_Data/Mono'
-Mono config path = 'F:/OnAir/Projet/OnAir/Build/OnAir_Data/Mono/etc'
-PlayerConnection initialized from F:/OnAir/Projet/OnAir/Build/OnAir_Data (debug = 0)
-PlayerConnection initialized network socket : 0.0.0.0 55052
-Multi-casting "[IP] 192.168.0.16 [Port] 55052 [Flags] 2 [Guid] 1894064910 [EditorId] 3296179204 [Version] 1048832 [Id] WindowsPlayer(BeardMage) [Debug] 0" to [225.0.0.222:54997]...
-PlayerConnection already initialized - listening to [192.168.0.16:55052]
 Initialize engine version: 5.2.3f1 (f3d16a1fa2dd)
 GfxDevice: creating device client; threaded=1
 Direct3D:
@@ -22,19 +15,457 @@ Loading F:\OnAir\Projet\OnAir\Build\OnAir_Data\Managed\UnityEngine.UI.dll into U
 Platform assembly: F:\OnAir\Projet\OnAir\Build\OnAir_Data\Managed\UnityEngine.Networking.dll (this message is harmless)
 Loading F:\OnAir\Projet\OnAir\Build\OnAir_Data\Managed\UnityEngine.Networking.dll into Unity Child Domain
 Platform assembly: F:\OnAir\Projet\OnAir\Build\OnAir_Data\Managed\System.Core.dll (this message is harmless)
-- Completed reload, in  0.100 seconds
+- Completed reload, in  0.337 seconds
 desktop: 1920x1080 60Hz; virtual: 1920x1080 at 0,0
 <RI> Initializing input.
 <RI> Input initialized.
 <RI> Initialized touch support.
 Platform assembly: F:\OnAir\Projet\OnAir\Build\OnAir_Data\Managed\System.dll (this message is harmless)
 Setting up 1 worker threads for Enlighten.
-  Thread -> id: 7f98 -> priority: 1 
+  Thread -> id: ca8c -> priority: 1 
 Unloading 3 Unused Serialized files (Serialized files now loaded: 0)
-UnloadTime: 2.816334 ms
-System memory in use before: 101.2 MB.
-System memory in use after: 101.3 MB.
+UnloadTime: 3.423675 ms
 
-Unloading 10 unused Assets to reduce memory usage. Loaded Objects now: 2588.
-Total: 1.145328 ms (FindLiveObjects: 0.213389 ms CreateObjectMapping: 0.051295 ms MarkObjects: 0.859304 ms  DeleteObjects: 0.019697 ms)
+Unloading 11 unused Assets to reduce memory usage. Loaded Objects now: 4525.
+Total: 2.849164 ms (FindLiveObjects: 0.492437 ms CreateObjectMapping: 0.140344 ms MarkObjects: 2.169189 ms  DeleteObjects: 0.034881 ms)
+
+Look rotation viewing vector is zero
+ 
+(Filename:  Line: 78)
+
+Look rotation viewing vector is zero
+ 
+(Filename:  Line: 78)
+
+Look rotation viewing vector is zero
+ 
+(Filename:  Line: 78)
+
+Look rotation viewing vector is zero
+ 
+(Filename:  Line: 78)
+
+Look rotation viewing vector is zero
+ 
+(Filename:  Line: 78)
+
+Look rotation viewing vector is zero
+ 
+(Filename:  Line: 78)
+
+Look rotation viewing vector is zero
+ 
+(Filename:  Line: 78)
+
+Look rotation viewing vector is zero
+ 
+(Filename:  Line: 78)
+
+Look rotation viewing vector is zero
+ 
+(Filename:  Line: 78)
+
+Look rotation viewing vector is zero
+ 
+(Filename:  Line: 78)
+
+Look rotation viewing vector is zero
+ 
+(Filename:  Line: 78)
+
+Look rotation viewing vector is zero
+ 
+(Filename:  Line: 78)
+
+Look rotation viewing vector is zero
+ 
+(Filename:  Line: 78)
+
+Look rotation viewing vector is zero
+ 
+(Filename:  Line: 78)
+
+Look rotation viewing vector is zero
+ 
+(Filename:  Line: 78)
+
+Look rotation viewing vector is zero
+ 
+(Filename:  Line: 78)
+
+Look rotation viewing vector is zero
+ 
+(Filename:  Line: 78)
+
+Look rotation viewing vector is zero
+ 
+(Filename:  Line: 78)
+
+Look rotation viewing vector is zero
+ 
+(Filename:  Line: 78)
+
+Look rotation viewing vector is zero
+ 
+(Filename:  Line: 78)
+
+Look rotation viewing vector is zero
+ 
+(Filename:  Line: 78)
+
+Look rotation viewing vector is zero
+ 
+(Filename:  Line: 78)
+
+Look rotation viewing vector is zero
+ 
+(Filename:  Line: 78)
+
+Look rotation viewing vector is zero
+ 
+(Filename:  Line: 78)
+
+Look rotation viewing vector is zero
+ 
+(Filename:  Line: 78)
+
+Look rotation viewing vector is zero
+ 
+(Filename:  Line: 78)
+
+Look rotation viewing vector is zero
+ 
+(Filename:  Line: 78)
+
+Look rotation viewing vector is zero
+ 
+(Filename:  Line: 78)
+
+Look rotation viewing vector is zero
+ 
+(Filename:  Line: 78)
+
+Look rotation viewing vector is zero
+ 
+(Filename:  Line: 78)
+
+Look rotation viewing vector is zero
+ 
+(Filename:  Line: 78)
+
+Look rotation viewing vector is zero
+ 
+(Filename:  Line: 78)
+
+Look rotation viewing vector is zero
+ 
+(Filename:  Line: 78)
+
+Look rotation viewing vector is zero
+ 
+(Filename:  Line: 78)
+
+Look rotation viewing vector is zero
+ 
+(Filename:  Line: 78)
+
+Look rotation viewing vector is zero
+ 
+(Filename:  Line: 78)
+
+Look rotation viewing vector is zero
+ 
+(Filename:  Line: 78)
+
+Look rotation viewing vector is zero
+ 
+(Filename:  Line: 78)
+
+Look rotation viewing vector is zero
+ 
+(Filename:  Line: 78)
+
+Look rotation viewing vector is zero
+ 
+(Filename:  Line: 78)
+
+Look rotation viewing vector is zero
+ 
+(Filename:  Line: 78)
+
+Look rotation viewing vector is zero
+ 
+(Filename:  Line: 78)
+
+Look rotation viewing vector is zero
+ 
+(Filename:  Line: 78)
+
+Look rotation viewing vector is zero
+ 
+(Filename:  Line: 78)
+
+Look rotation viewing vector is zero
+ 
+(Filename:  Line: 78)
+
+Look rotation viewing vector is zero
+ 
+(Filename:  Line: 78)
+
+Look rotation viewing vector is zero
+ 
+(Filename:  Line: 78)
+
+Look rotation viewing vector is zero
+ 
+(Filename:  Line: 78)
+
+Look rotation viewing vector is zero
+ 
+(Filename:  Line: 78)
+
+Look rotation viewing vector is zero
+ 
+(Filename:  Line: 78)
+
+Look rotation viewing vector is zero
+ 
+(Filename:  Line: 78)
+
+Look rotation viewing vector is zero
+ 
+(Filename:  Line: 78)
+
+Look rotation viewing vector is zero
+ 
+(Filename:  Line: 78)
+
+Look rotation viewing vector is zero
+ 
+(Filename:  Line: 78)
+
+Look rotation viewing vector is zero
+ 
+(Filename:  Line: 78)
+
+Look rotation viewing vector is zero
+ 
+(Filename:  Line: 78)
+
+Look rotation viewing vector is zero
+ 
+(Filename:  Line: 78)
+
+Look rotation viewing vector is zero
+ 
+(Filename:  Line: 78)
+
+Look rotation viewing vector is zero
+ 
+(Filename:  Line: 78)
+
+Look rotation viewing vector is zero
+ 
+(Filename:  Line: 78)
+
+Look rotation viewing vector is zero
+ 
+(Filename:  Line: 78)
+
+Look rotation viewing vector is zero
+ 
+(Filename:  Line: 78)
+
+Look rotation viewing vector is zero
+ 
+(Filename:  Line: 78)
+
+Look rotation viewing vector is zero
+ 
+(Filename:  Line: 78)
+
+Look rotation viewing vector is zero
+ 
+(Filename:  Line: 78)
+
+Look rotation viewing vector is zero
+ 
+(Filename:  Line: 78)
+
+Look rotation viewing vector is zero
+ 
+(Filename:  Line: 78)
+
+Look rotation viewing vector is zero
+ 
+(Filename:  Line: 78)
+
+Look rotation viewing vector is zero
+ 
+(Filename:  Line: 78)
+
+Look rotation viewing vector is zero
+ 
+(Filename:  Line: 78)
+
+Look rotation viewing vector is zero
+ 
+(Filename:  Line: 78)
+
+Look rotation viewing vector is zero
+ 
+(Filename:  Line: 78)
+
+Look rotation viewing vector is zero
+ 
+(Filename:  Line: 78)
+
+Look rotation viewing vector is zero
+ 
+(Filename:  Line: 78)
+
+Look rotation viewing vector is zero
+ 
+(Filename:  Line: 78)
+
+Look rotation viewing vector is zero
+ 
+(Filename:  Line: 78)
+
+Look rotation viewing vector is zero
+ 
+(Filename:  Line: 78)
+
+Look rotation viewing vector is zero
+ 
+(Filename:  Line: 78)
+
+Look rotation viewing vector is zero
+ 
+(Filename:  Line: 78)
+
+Look rotation viewing vector is zero
+ 
+(Filename:  Line: 78)
+
+Look rotation viewing vector is zero
+ 
+(Filename:  Line: 78)
+
+Look rotation viewing vector is zero
+ 
+(Filename:  Line: 78)
+
+Look rotation viewing vector is zero
+ 
+(Filename:  Line: 78)
+
+Look rotation viewing vector is zero
+ 
+(Filename:  Line: 78)
+
+Look rotation viewing vector is zero
+ 
+(Filename:  Line: 78)
+
+Look rotation viewing vector is zero
+ 
+(Filename:  Line: 78)
+
+Look rotation viewing vector is zero
+ 
+(Filename:  Line: 78)
+
+Look rotation viewing vector is zero
+ 
+(Filename:  Line: 78)
+
+Look rotation viewing vector is zero
+ 
+(Filename:  Line: 78)
+
+Look rotation viewing vector is zero
+ 
+(Filename:  Line: 78)
+
+Look rotation viewing vector is zero
+ 
+(Filename:  Line: 78)
+
+Look rotation viewing vector is zero
+ 
+(Filename:  Line: 78)
+
+Look rotation viewing vector is zero
+ 
+(Filename:  Line: 78)
+
+Look rotation viewing vector is zero
+ 
+(Filename:  Line: 78)
+
+Look rotation viewing vector is zero
+ 
+(Filename:  Line: 78)
+
+Look rotation viewing vector is zero
+ 
+(Filename:  Line: 78)
+
+Look rotation viewing vector is zero
+ 
+(Filename:  Line: 78)
+
+Look rotation viewing vector is zero
+ 
+(Filename:  Line: 78)
+
+Look rotation viewing vector is zero
+ 
+(Filename:  Line: 78)
+
+Look rotation viewing vector is zero
+ 
+(Filename:  Line: 78)
+
+Look rotation viewing vector is zero
+ 
+(Filename:  Line: 78)
+
+Look rotation viewing vector is zero
+ 
+(Filename:  Line: 78)
+
+Look rotation viewing vector is zero
+ 
+(Filename:  Line: 78)
+
+Look rotation viewing vector is zero
+ 
+(Filename:  Line: 78)
+
+Look rotation viewing vector is zero
+ 
+(Filename:  Line: 78)
+
+Look rotation viewing vector is zero
+ 
+(Filename:  Line: 78)
+
+Look rotation viewing vector is zero
+ 
+(Filename:  Line: 78)
+
+Look rotation viewing vector is zero
+ 
+(Filename:  Line: 78)
+
+Look rotation viewing vector is zero
+ 
+(Filename:  Line: 78)
+
+Look rotation viewing vector is zero
+ 
+(Filename:  Line: 78)
 

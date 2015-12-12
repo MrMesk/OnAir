@@ -43,6 +43,7 @@ public class PlayerController : MonoBehaviour
 	public float swordRadius;
 	public float swordForce;
 	public int swordDmg;
+	public LayerMask swordLayer;
 
 	[Header("Player Stats")]
 	public float playerSpeed;
@@ -297,14 +298,27 @@ public class PlayerController : MonoBehaviour
 					case weaponTypes.Sword:
 
 						shotCD = swordCD;
-						Collider[] potentialTargets = Physics.OverlapSphere(transform.position, swordRadius, 1 << 10);
+						Collider[] potentialTargets = Physics.OverlapSphere(transform.position, swordRadius, swordLayer);
 						for (int i = 0; i < potentialTargets.Length; i++)
 						{
 							Vector3 enemyPos = potentialTargets[i].transform.position - transform.position;
 							if (Vector3.Angle(enemyPos.normalized, shotDir.normalized) < 90)
 							{
-								potentialTargets[i].gameObject.GetComponent<Rigidbody>().AddForce((potentialTargets[i].transform.position - transform.position).normalized * swordForce);
-								potentialTargets[i].gameObject.GetComponent<LifeManager>().StartCoroutine(potentialTargets[i].gameObject.GetComponent<LifeManager>().damage(swordDmg));
+								if(potentialTargets[i].tag == "Enemy")
+								{
+									potentialTargets[i].gameObject.GetComponent<Rigidbody>().velocity = ((potentialTargets[i].transform.position - transform.position).normalized * swordForce);
+									potentialTargets[i].gameObject.GetComponent<LifeManager>().StartCoroutine(potentialTargets[i].gameObject.GetComponent<LifeManager>().damage(swordDmg));
+								}
+								else if (potentialTargets[i].tag == "Boss")
+								{
+									potentialTargets[i].gameObject.GetComponent<BossBattle>().StartCoroutine(potentialTargets[i].gameObject.GetComponent<BossBattle>().damageBoss(swordDmg));
+								}
+								else if(potentialTargets[i].tag == "EnemyBullet")
+								{
+									potentialTargets[i].gameObject.GetComponent<Rigidbody>().velocity = Vector3.zero;
+                                    ObjectPooler.current.PoolObject(potentialTargets[i].gameObject);
+								}
+
 							}
 						}
 						StartCoroutine(animSword());
