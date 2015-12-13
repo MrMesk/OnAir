@@ -1,5 +1,6 @@
 ﻿using UnityEngine;
 using System.Collections;
+using UnityEngine.UI;
 
 [RequireComponent(typeof(AudioSource))]
 public class LifeManager : MonoBehaviour
@@ -13,6 +14,7 @@ public class LifeManager : MonoBehaviour
 	int remainingLife;
 	Color normalColor;
 
+	public Slider lifeBar;
 
 	public Color hitColor = Color.red;
 	public GameObject skin;
@@ -42,6 +44,8 @@ public class LifeManager : MonoBehaviour
 		skin.GetComponent<Renderer>().material.color = normalColor;
 		
 		remainingLife -= dmg;
+
+		if(this.tag == "Player") lifeBar.value = remainingLife;
 		
 	}
 	public IEnumerator heal(int amount)
@@ -51,5 +55,6 @@ public class LifeManager : MonoBehaviour
 		yield return new WaitForSeconds(0.2f);
 		skin.GetComponent<Renderer>().material.color = normalColor;
 		remainingLife += amount;
+		lifeBar.value = remainingLife;
 	}
 }

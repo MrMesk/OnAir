@@ -59,7 +59,8 @@ public class CameraMover : MonoBehaviour
 	{
 		if (other.tag == "Player")
 		{
-			toDeactivate = true;
+			//Deactivated for the minimap
+			//toDeactivate = true;
 		}
 	}
 }

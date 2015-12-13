@@ -12,6 +12,7 @@ public class BossBattle : MonoBehaviour
 	public AudioClip ouch;
 	public GameObject particleDeath;
 	public GameObject particleSwitch;
+	public GameObject particleSpawn;
 	public float timeBetweenActions = 2;
 
 	// Private
@@ -192,25 +193,37 @@ public class BossBattle : MonoBehaviour
 		switch(enemyNumber)
 		{
 			case 1:
-				GameObject mob1l = Instantiate(enemy1, leftHand.transform.position, enemy1.transform.rotation) as GameObject;
+				GameObject mob1l = Instantiate(enemy1, leftHand.transform.position - Vector3.forward * 5, enemy1.transform.rotation) as GameObject;
+				Instantiate(particleSpawn, leftHand.transform.position - Vector3.forward * 5, transform.rotation);
 				mob1l.transform.parent = transform.parent;
-				GameObject mob1r = Instantiate(enemy1, rightHand.transform.position, enemy1.transform.rotation) as GameObject;
+
+				GameObject mob1r = Instantiate(enemy1, rightHand.transform.position - Vector3.forward * 5, enemy1.transform.rotation) as GameObject;
+				Instantiate(particleSpawn, rightHand.transform.position - Vector3.forward * 5, transform.rotation);
 				mob1r.transform.parent = transform.parent;
+
 				enemyNumber++;
+
 				break;
 
 			case 2:
-				GameObject mob2l = Instantiate(enemy2, leftHand.transform.position, enemy2.transform.rotation) as GameObject;
+				GameObject mob2l = Instantiate(enemy2, leftHand.transform.position - Vector3.forward * 5, enemy2.transform.rotation) as GameObject;
+				Instantiate(particleSpawn, leftHand.transform.position - Vector3.forward * 5, transform.rotation);
 				mob2l.transform.parent = transform.parent;
-				GameObject mob2r = Instantiate(enemy2, rightHand.transform.position, enemy2.transform.rotation) as GameObject;
+
+				GameObject mob2r = Instantiate(enemy2, rightHand.transform.position - Vector3.forward * 5, enemy2.transform.rotation) as GameObject;
+				Instantiate(particleSpawn, rightHand.transform.position - Vector3.forward * 5, transform.rotation);
 				mob2r.transform.parent = transform.parent;
+
 				enemyNumber++;
 				break;
 			case 3:
-				GameObject mob3l = Instantiate(enemy3, leftHand.transform.position, enemy3.transform.rotation) as GameObject;
+				GameObject mob3l = Instantiate(enemy3, leftHand.transform.position - Vector3.forward * 5, enemy3.transform.rotation) as GameObject;
+				Instantiate(particleSpawn, leftHand.transform.position - Vector3.forward * 5, transform.rotation);
 				mob3l.transform.parent = transform.parent;
-				GameObject mob3r = Instantiate(enemy3, rightHand.transform.position, enemy3.transform.rotation) as GameObject;
+
+				GameObject mob3r = Instantiate(enemy3, rightHand.transform.position - Vector3.forward * 5, enemy3.transform.rotation) as GameObject;
 				mob3r.transform.parent = transform.parent;
+				Instantiate(particleSpawn, rightHand.transform.position - Vector3.forward * 5, transform.rotation);
 				enemyNumber = 1;
 				break;
 		}

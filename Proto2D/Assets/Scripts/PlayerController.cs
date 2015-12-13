@@ -1,5 +1,6 @@
 ﻿using UnityEngine;
 using System.Collections;
+using UnityEngine.UI;
 
 public class PlayerController : MonoBehaviour 
 {
@@ -204,6 +205,8 @@ public class PlayerController : MonoBehaviour
 				canDodge = true;
 			}
 		}
+
+
 	}
 
 	void MoveManage()

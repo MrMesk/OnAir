@@ -15,19 +15,19 @@ Loading F:\OnAir\Projet\OnAir\Build\OnAir_Data\Managed\UnityEngine.UI.dll into U
 Platform assembly: F:\OnAir\Projet\OnAir\Build\OnAir_Data\Managed\UnityEngine.Networking.dll (this message is harmless)
 Loading F:\OnAir\Projet\OnAir\Build\OnAir_Data\Managed\UnityEngine.Networking.dll into Unity Child Domain
 Platform assembly: F:\OnAir\Projet\OnAir\Build\OnAir_Data\Managed\System.Core.dll (this message is harmless)
-- Completed reload, in  0.337 seconds
+- Completed reload, in  0.105 seconds
 desktop: 1920x1080 60Hz; virtual: 1920x1080 at 0,0
 <RI> Initializing input.
 <RI> Input initialized.
 <RI> Initialized touch support.
 Platform assembly: F:\OnAir\Projet\OnAir\Build\OnAir_Data\Managed\System.dll (this message is harmless)
 Setting up 1 worker threads for Enlighten.
-  Thread -> id: ca8c -> priority: 1 
+  Thread -> id: 1810 -> priority: 1 
 Unloading 3 Unused Serialized files (Serialized files now loaded: 0)
-UnloadTime: 3.423675 ms
+UnloadTime: 3.720378 ms
 
-Unloading 11 unused Assets to reduce memory usage. Loaded Objects now: 4525.
-Total: 2.849164 ms (FindLiveObjects: 0.492437 ms CreateObjectMapping: 0.140344 ms MarkObjects: 2.169189 ms  DeleteObjects: 0.034881 ms)
+Unloading 11 unused Assets to reduce memory usage. Loaded Objects now: 4535.
+Total: 2.607055 ms (FindLiveObjects: 0.426780 ms CreateObjectMapping: 0.124340 ms MarkObjects: 1.987812 ms  DeleteObjects: 0.032008 ms)
 
 Look rotation viewing vector is zero
  
@@ -209,263 +209,9 @@ Look rotation viewing vector is zero
  
 (Filename:  Line: 78)
 
-Look rotation viewing vector is zero
- 
-(Filename:  Line: 78)
-
-Look rotation viewing vector is zero
- 
-(Filename:  Line: 78)
-
-Look rotation viewing vector is zero
- 
-(Filename:  Line: 78)
-
-Look rotation viewing vector is zero
- 
-(Filename:  Line: 78)
-
-Look rotation viewing vector is zero
- 
-(Filename:  Line: 78)
-
-Look rotation viewing vector is zero
- 
-(Filename:  Line: 78)
-
-Look rotation viewing vector is zero
- 
-(Filename:  Line: 78)
-
-Look rotation viewing vector is zero
- 
-(Filename:  Line: 78)
-
-Look rotation viewing vector is zero
- 
-(Filename:  Line: 78)
-
-Look rotation viewing vector is zero
- 
-(Filename:  Line: 78)
-
-Look rotation viewing vector is zero
- 
-(Filename:  Line: 78)
-
-Look rotation viewing vector is zero
- 
-(Filename:  Line: 78)
-
-Look rotation viewing vector is zero
- 
-(Filename:  Line: 78)
-
-Look rotation viewing vector is zero
- 
-(Filename:  Line: 78)
-
-Look rotation viewing vector is zero
- 
-(Filename:  Line: 78)
-
-Look rotation viewing vector is zero
- 
-(Filename:  Line: 78)
-
-Look rotation viewing vector is zero
- 
-(Filename:  Line: 78)
-
-Look rotation viewing vector is zero
- 
-(Filename:  Line: 78)
-
-Look rotation viewing vector is zero
- 
-(Filename:  Line: 78)
-
-Look rotation viewing vector is zero
- 
-(Filename:  Line: 78)
-
-Look rotation viewing vector is zero
- 
-(Filename:  Line: 78)
-
-Look rotation viewing vector is zero
- 
-(Filename:  Line: 78)
-
-Look rotation viewing vector is zero
- 
-(Filename:  Line: 78)
-
-Look rotation viewing vector is zero
- 
-(Filename:  Line: 78)
-
-Look rotation viewing vector is zero
- 
-(Filename:  Line: 78)
-
-Look rotation viewing vector is zero
- 
-(Filename:  Line: 78)
-
-Look rotation viewing vector is zero
- 
-(Filename:  Line: 78)
-
-Look rotation viewing vector is zero
- 
-(Filename:  Line: 78)
-
-Look rotation viewing vector is zero
- 
-(Filename:  Line: 78)
-
-Look rotation viewing vector is zero
- 
-(Filename:  Line: 78)
-
-Look rotation viewing vector is zero
- 
-(Filename:  Line: 78)
-
-Look rotation viewing vector is zero
- 
-(Filename:  Line: 78)
-
-Look rotation viewing vector is zero
- 
-(Filename:  Line: 78)
-
-Look rotation viewing vector is zero
- 
-(Filename:  Line: 78)
-
-Look rotation viewing vector is zero
- 
-(Filename:  Line: 78)
-
-Look rotation viewing vector is zero
- 
-(Filename:  Line: 78)
-
-Look rotation viewing vector is zero
- 
-(Filename:  Line: 78)
-
-Look rotation viewing vector is zero
- 
-(Filename:  Line: 78)
-
-Look rotation viewing vector is zero
- 
-(Filename:  Line: 78)
-
-Look rotation viewing vector is zero
- 
-(Filename:  Line: 78)
-
-Look rotation viewing vector is zero
- 
-(Filename:  Line: 78)
-
-Look rotation viewing vector is zero
- 
-(Filename:  Line: 78)
-
-Look rotation viewing vector is zero
- 
-(Filename:  Line: 78)
-
-Look rotation viewing vector is zero
- 
-(Filename:  Line: 78)
-
-Look rotation viewing vector is zero
- 
-(Filename:  Line: 78)
-
-Look rotation viewing vector is zero
- 
-(Filename:  Line: 78)
-
-Look rotation viewing vector is zero
- 
-(Filename:  Line: 78)
-
-Look rotation viewing vector is zero
- 
-(Filename:  Line: 78)
-
-Look rotation viewing vector is zero
- 
-(Filename:  Line: 78)
-
-Look rotation viewing vector is zero
- 
-(Filename:  Line: 78)
-
-Look rotation viewing vector is zero
- 
-(Filename:  Line: 78)
-
-Look rotation viewing vector is zero
- 
-(Filename:  Line: 78)
-
-Look rotation viewing vector is zero
- 
-(Filename:  Line: 78)
-
-Look rotation viewing vector is zero
- 
-(Filename:  Line: 78)
-
-Look rotation viewing vector is zero
- 
-(Filename:  Line: 78)
-
-Look rotation viewing vector is zero
- 
-(Filename:  Line: 78)
-
-Look rotation viewing vector is zero
- 
-(Filename:  Line: 78)
-
-Look rotation viewing vector is zero
- 
-(Filename:  Line: 78)
-
-Look rotation viewing vector is zero
- 
-(Filename:  Line: 78)
-
-Look rotation viewing vector is zero
- 
-(Filename:  Line: 78)
-
-Look rotation viewing vector is zero
- 
-(Filename:  Line: 78)
-
-Look rotation viewing vector is zero
- 
-(Filename:  Line: 78)
-
-Look rotation viewing vector is zero
- 
-(Filename:  Line: 78)
-
-Look rotation viewing vector is zero
- 
-(Filename:  Line: 78)
+Unloading 4 Unused Serialized files (Serialized files now loaded: 0)
+UnloadTime: 7.535140 ms
 
-Look rotation viewing vector is zero
- 
-(Filename:  Line: 78)
+Unloading 1737 unused Assets to reduce memory usage. Loaded Objects now: 4567.
+Total: 3.638715 ms (FindLiveObjects: 0.527320 ms CreateObjectMapping: 0.258530 ms MarkObjects: 2.298870 ms  DeleteObjects: 0.552763 ms)
 

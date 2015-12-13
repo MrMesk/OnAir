@@ -10,6 +10,8 @@ public class RoomController : MonoBehaviour
 	AudioSource audioPlayer;
 	int nbEnemies;
 	bool isClosed = false;
+	bool hasSpawned = false;
+	float spawnChance = 0.5f;
 	// Use this for initialization
 	void Start ()
 	{
@@ -31,6 +33,7 @@ public class RoomController : MonoBehaviour
 			if(nbEnemies == 0)
 			{
 				isClosed = false;
+				SpawnRewardTry();
 			}
 		}
 		else
@@ -46,6 +49,20 @@ public class RoomController : MonoBehaviour
 		{
 			isClosed = true;
 			audioPlayer.PlayOneShot(Resources.Load("Sounds/lock", typeof(AudioClip)) as AudioClip);
+		}
+	}
+
+	void SpawnRewardTry()
+	{
+		if(!hasSpawned)
+		{
+			if(Random.value < spawnChance)
+			{
+				GameObject heal = Resources.Load("life") as GameObject;
+				Instantiate(heal, transform.position, heal.transform.rotation);
+			}
+			hasSpawned = false;
+			
 		}
 	}
 
